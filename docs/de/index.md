@@ -11,10 +11,10 @@ Die Nodes arbeiten direkt mit Node-RED-Nachrichten: `msg.topic` bezeichnet die F
 
 ## Installation
 
-Diese öffentliche Beta ist für alle verfügbar. Führe den folgenden Befehl im Node-RED-Benutzerverzeichnis aus (normalerweise `~/.node-red`) und starte Node-RED neu. Erforderlich sind Node.js ab 20.18.1 und Node-RED ab 3.1.1. Installiere `node-red-contrib-knx-ultimate` nur für die KNX-Integration.
+Diese öffentliche Beta ist für alle verfügbar. Installiere das Paket über **Palette verwalten → Installieren** und starte Node-RED neu. Alternativ kannst du den folgenden Befehl im Node-RED-Benutzerverzeichnis ausführen (normalerweise `~/.node-red`). Erforderlich sind Node.js ab 20.18.1 und Node-RED ab 3.1.1. Installiere `node-red-contrib-knx-ultimate` nur für die KNX-Integration.
 
 ```sh
-npm install node-red-contrib-matter-ultimate@beta
+npm install node-red-contrib-matter-ultimate
 ```
 
 ## Node-RED-Nachrichten verwenden

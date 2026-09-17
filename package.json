@@ -78,7 +78,7 @@
   "homepage": "https://supergiovane.github.io/node-red-contrib-matter-ultimate/",
   "publishConfig": {
     "access": "public",
-    "tag": "beta",
+    "tag": "latest",
     "registry": "https://registry.npmjs.org/"
   }
 }

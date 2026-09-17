@@ -11,10 +11,10 @@ Los nodos funcionan directamente con mensajes Node-RED: `msg.topic` identifica l
 
 ## Instalación
 
-Esta beta pública está disponible para todos. Ejecuta el siguiente comando en la carpeta de usuario de Node-RED (normalmente `~/.node-red`) y reinicia Node-RED. Requiere Node.js 20.18.1 o posterior y Node-RED 3.1.1 o posterior. Instala `node-red-contrib-knx-ultimate` solo si necesitas la integración KNX.
+Esta beta pública está disponible para todos. Instala el paquete desde **Gestionar paleta → Instalar** y reinicia Node-RED. También puedes ejecutar el siguiente comando en la carpeta de usuario de Node-RED (normalmente `~/.node-red`). Requiere Node.js 20.18.1 o posterior y Node-RED 3.1.1 o posterior. Instala `node-red-contrib-knx-ultimate` solo si necesitas la integración KNX.
 
 ```sh
-npm install node-red-contrib-matter-ultimate@beta
+npm install node-red-contrib-matter-ultimate
 ```
 
 ## Uso con mensajes Node-RED

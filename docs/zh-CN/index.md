@@ -11,10 +11,10 @@ section: index
 
 ## 安装
 
-此公开测试版向所有人开放。在 Node-RED 用户目录（通常为 `~/.node-red`）中执行以下命令，然后重启 Node-RED。需要 Node.js 20.18.1 或更高版本及 Node-RED 3.1.1 或更高版本。只有需要 KNX 集成时才安装 `node-red-contrib-knx-ultimate`。
+此公开测试版向所有人开放。通过 **管理节点面板 → 安装** 安装本包，然后重启 Node-RED。也可以在 Node-RED 用户目录（通常为 `~/.node-red`）中执行以下命令。需要 Node.js 20.18.1 或更高版本及 Node-RED 3.1.1 或更高版本。只有需要 KNX 集成时才安装 `node-red-contrib-knx-ultimate`。
 
 ```sh
-npm install node-red-contrib-matter-ultimate@beta
+npm install node-red-contrib-matter-ultimate
 ```
 
 ## 使用 Node-RED 消息

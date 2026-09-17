@@ -11,10 +11,10 @@ Les nœuds fonctionnent directement avec les messages Node-RED : `msg.topic` ide
 
 ## Installation
 
-Cette bêta publique est accessible à tous. Exécutez la commande suivante dans le dossier utilisateur de Node-RED (généralement `~/.node-red`), puis redémarrez Node-RED. Node.js 20.18.1 minimum et Node-RED 3.1.1 minimum sont requis. Installez `node-red-contrib-knx-ultimate` seulement pour l’intégration KNX.
+Cette bêta publique est accessible à tous. Installez le package via **Gérer la palette → Installer**, puis redémarrez Node-RED. Vous pouvez aussi exécuter la commande suivante dans le dossier utilisateur de Node-RED (généralement `~/.node-red`). Node.js 20.18.1 minimum et Node-RED 3.1.1 minimum sont requis. Installez `node-red-contrib-knx-ultimate` seulement pour l’intégration KNX.
 
 ```sh
-npm install node-red-contrib-matter-ultimate@beta
+npm install node-red-contrib-matter-ultimate
 ```
 
 ## Utiliser les messages Node-RED

@@ -39,10 +39,12 @@ The nodes work directly with Node-RED messages: `msg.topic` identifies the funct
 
 Requires Node.js >=20.18.1 and Node-RED >=3.1.1. This is the first public beta, available to everyone.
 
-Run this command in your Node-RED user directory (usually `~/.node-red`), then restart Node-RED:
+In Node-RED, open **Manage palette → Install**, search for `node-red-contrib-matter-ultimate` and install it. Restart Node-RED.
+
+Alternatively, run this command in your Node-RED user directory (usually `~/.node-red`):
 
 ```sh
-npm install node-red-contrib-matter-ultimate@beta
+npm install node-red-contrib-matter-ultimate
 ```
 
 ## Using Node-RED messages
@@ -90,7 +92,7 @@ Hardware pairing and physical device operation still need validation on the inte
 [license-image]: https://img.shields.io/badge/license-MIT-blue
 [license-url]: LICENSE
 [npm-url]: https://www.npmjs.com/package/node-red-contrib-matter-ultimate
-[npm-version-image]: https://img.shields.io/npm/v/node-red-contrib-matter-ultimate/beta.svg
+[npm-version-image]: https://img.shields.io/npm/v/node-red-contrib-matter-ultimate.svg
 [node-version-image]: https://img.shields.io/node/v/node-red-contrib-matter-ultimate?logo=node.js&logoColor=white
 [npm-downloads-month-image]: https://img.shields.io/npm/dm/node-red-contrib-matter-ultimate.svg
 [npm-downloads-18-months-image]: https://img.shields.io/npm/d18m/node-red-contrib-matter-ultimate.svg

@@ -1,0 +1,60 @@
+<script type="text/markdown" data-help-name="matter-ultimate-bridge-config">
+## Documentation
+
+Les nœuds fonctionnent directement avec les messages Node-RED : `msg.topic` identifie la fonction et `msg.payload` contient sa valeur. KNX Ultimate n’est pas nécessaire.
+
+Créez une configuration bridge, enregistrez et faites Deploy. Rouvrez-la pour afficher le QR/code d’appairage et ajoutez le bridge dans l’app Matter. Les nœuds appareil partageant cette configuration deviennent des appareils du bridge.
+
+
+
+
+
+Activez les entrées/sorties et saisissez les noms des topics dans les champs de commande et d’état. Laissez la passerelle KNX vide ; les champs DPT sont masqués car ils ne sont pas nécessaires. Utilisez des topics distincts pour les commandes et les états. La correspondance doit être exacte, sans caractères génériques.
+
+### Mode KNX
+
+**Vous pouvez aussi utiliser ce package avec KNX Ultimate.** L’intégration est native : installez `node-red-contrib-knx-ultimate` et sélectionnez sa passerelle pour activer le **Mode KNX**. Les mêmes champs utilisent alors des adresses de groupe et des DPT, avec des suggestions du projet ETS importé. Commandes et états passent directement par le bus ; aucun nœud Function intermédiaire n’est nécessaire pour ces correspondances.
+
+En sélectionnant une passerelle, remplacez les topics enregistrés par de vraies adresses de groupe et choisissez les DPT appropriés. Une passerelle sélectionnée mais hors ligne laisse le nœud en Mode KNX. Pour revenir aux messages Node-RED, retirez la passerelle et configurez à nouveau les topics.
+
+[Nœuds](https://supergiovane.github.io/node-red-contrib-matter-ultimate/fr/nodes.html) · [Exemples](https://supergiovane.github.io/node-red-contrib-matter-ultimate/fr/examples.html)
+
+
+---
+
+# Bridge Matter
+
+## Vue d'ensemble
+
+Ce nœud de configuration est le **bridge Matter lui-même** : il exécute le serveur Matter qu'Alexa, Google Home, Apple Home (ou tout contrôleur Matter) appairent **une seule fois**. Chaque nœud **Matter Bridge device** de vos flux pointe ici et apparaît dans les apps comme un appareil du bridge.
+
+## Configuration
+
+|Champ|Description|
+|--|--|
+| Nom | Le nom de ce nœud de configuration dans Node-RED |
+| Nom du bridge Matter | Le nom du bridge lui-même dans les apps Matter. **Laissez vide pour réutiliser le Nom de ce nœud.** |
+| Port | Port UDP du serveur Matter (5540 par défaut). Chaque bridge a besoin de son propre port, vous pouvez donc exécuter **plusieurs bridges indépendants** |
+
+## Appairage
+
+1. **Déployez**, attendez quelques secondes, puis rouvrez ce nœud.
+2. Le panneau d'appairage montre le **QR code** et le **code manuel** : scannez ou saisissez-le dans Alexa / Google Home / Apple Home (« ajouter un appareil Matter »).
+3. Plusieurs contrôleurs peuvent être appairés au même bridge (multi-fabric Matter).
+
+Pour ajouter un contrôleur lorsque le QR code est masqué, ouvrez le mode d'appairage depuis un contrôleur déjà associé, puis ajoutez un appareil Matter dans le nouveau contrôleur. Utilisez **Réinitialiser l'appairage** uniquement pour supprimer tous les contrôleurs et recommencer.
+
+Le bouton **Réinitialiser l'appairage** supprime tous les contrôleurs appairés et relance l'annonce d'appairage.
+
+## Identité et stockage
+
+L'identité du bridge est liée à ce nœud de configuration et enregistrée dans `knxultimatestorage/matter` du répertoire utilisateur de Node-RED : les re-deploys (même en changeant port ou nom) ne nécessitent **PAS** de nouvel appairage. Seule la suppression de ce nœud de configuration et la création d'un nouveau changent l'identité — dans ce cas supprimez l'ancien bridge de l'app Matter et appairez de nouveau.
+
+Utilisez **Exporter** pour télécharger une sauvegarde complète de cette instance du bridge, avec fabrics, identifiants privés, sessions et données d'association. **Protégez le fichier comme un mot de passe.** L'import remplace le stockage de cette instance et redémarre brièvement le bridge. Une sauvegarde de bridge ne peut pas être importée dans un contrôleur.
+
+## Notes
+
+- L'hôte Node-RED doit avoir **IPv6 link-local** activé (exigence standard de Matter) et être joignable par les contrôleurs sur le réseau local.
+- Les nœuds d'appareil ajoutés/renommés/supprimés sont pris en compte en quelques secondes, sans nouvel appairage.
+- **Noms :** Alexa et Google Home respectent les noms définis ici (nom du bridge et noms des nœuds d'appareil). **Apple Home les ignore et vous demande de nommer chaque accessoire manuellement lors de la configuration** — c'est une limite d'Apple, pas du bridge.
+</script>

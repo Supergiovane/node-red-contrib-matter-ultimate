@@ -1,0 +1,116 @@
+[
+  {
+    "id": "matter_bridge_topic_tab",
+    "type": "tab",
+    "label": "Matter Bridge · Node-RED",
+    "disabled": false,
+    "info": "Select or create a Matter Bridge configuration, choose On/Off light, keep KNX Gateway empty and enable the pins. Deploy and pair the bridge in your Matter app. Manual Injects simulate the actual device state: living-room/light/status with true/false updates the app. A command from the app appears on living-room/light/command. Connect that output to your real device logic; return its confirmed state to the status input. The Injects do not control a physical lamp and are never automatic."
+  },
+  {
+    "id": "matter_bridge_topic_help",
+    "type": "comment",
+    "z": "matter_bridge_topic_tab",
+    "name": "Setup: open this comment before Deploy",
+    "info": "Select or create a Matter Bridge configuration, choose On/Off light, keep KNX Gateway empty and enable the pins. Deploy and pair the bridge in your Matter app. Manual Injects simulate the actual device state: living-room/light/status with true/false updates the app. A command from the app appears on living-room/light/command. Connect that output to your real device logic; return its confirmed state to the status input. The Injects do not control a physical lamp and are never automatic.",
+    "x": 340,
+    "y": 60,
+    "wires": []
+  },
+  {
+    "id": "matter_bridge_topic_device",
+    "type": "matterUltimateBridge",
+    "z": "matter_bridge_topic_tab",
+    "name": "Living room virtual light",
+    "server": "",
+    "serverMatterBridge": "",
+    "deviceType": "onofflight",
+    "enableNodePINS": "yes",
+    "inputs": 1,
+    "outputs": 1,
+    "readStatusAtStartup": "no",
+    "gaOnOff": "living-room/light/command",
+    "gaOnOffStatus": "living-room/light/status",
+    "dptOnOff": "",
+    "dptOnOffStatus": "",
+    "x": 480,
+    "y": 200,
+    "wires": [
+      [
+        "matter_bridge_topic_debug"
+      ]
+    ]
+  },
+  {
+    "id": "matter_bridge_topic_debug",
+    "type": "debug",
+    "z": "matter_bridge_topic_tab",
+    "name": "Messages / states",
+    "active": true,
+    "tosidebar": true,
+    "console": false,
+    "tostatus": false,
+    "complete": "true",
+    "targetType": "full",
+    "x": 760,
+    "y": 200,
+    "wires": []
+  },
+  {
+    "id": "matter_bridge_topic_inject_0",
+    "type": "inject",
+    "z": "matter_bridge_topic_tab",
+    "name": "Report ON",
+    "props": [
+      {
+        "p": "payload"
+      },
+      {
+        "p": "topic",
+        "vt": "str"
+      }
+    ],
+    "repeat": "",
+    "crontab": "",
+    "once": false,
+    "onceDelay": 0.1,
+    "topic": "living-room/light/status",
+    "payload": "true",
+    "payloadType": "bool",
+    "x": 180,
+    "y": 160,
+    "wires": [
+      [
+        "matter_bridge_topic_device"
+      ]
+    ]
+  },
+  {
+    "id": "matter_bridge_topic_inject_1",
+    "type": "inject",
+    "z": "matter_bridge_topic_tab",
+    "name": "Report OFF",
+    "props": [
+      {
+        "p": "payload"
+      },
+      {
+        "p": "topic",
+        "vt": "str"
+      }
+    ],
+    "repeat": "",
+    "crontab": "",
+    "once": false,
+    "onceDelay": 0.1,
+    "topic": "living-room/light/status",
+    "payload": "false",
+    "payloadType": "bool",
+    "x": 180,
+    "y": 220,
+    "wires": [
+      [
+        "matter_bridge_topic_device"
+      ]
+    ]
+  }
+]

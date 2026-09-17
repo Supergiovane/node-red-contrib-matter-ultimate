@@ -1,0 +1,154 @@
+[
+  {
+    "id": "matter_topic_light_tab",
+    "type": "tab",
+    "label": "MATTER light · Node-RED",
+    "disabled": false,
+    "info": "Select or create your Matter Controller configuration, pair a dimmable light and select its endpoint. Leave KNX Gateway empty and keep input/output pins enabled. Deploy, then click Inject manually. Command topics: living-room/on and living-room/brightness. State topics: living-room/on/state and living-room/brightness/state. Debug also shows RAW events; use a Switch node on msg.topic when you only want mapped states. This example contains no credentials and sends no automatic Inject."
+  },
+  {
+    "id": "matter_topic_light_help",
+    "type": "comment",
+    "z": "matter_topic_light_tab",
+    "name": "Setup: open this comment before Deploy",
+    "info": "Select or create your Matter Controller configuration, pair a dimmable light and select its endpoint. Leave KNX Gateway empty and keep input/output pins enabled. Deploy, then click Inject manually. Command topics: living-room/on and living-room/brightness. State topics: living-room/on/state and living-room/brightness/state. Debug also shows RAW events; use a Switch node on msg.topic when you only want mapped states. This example contains no credentials and sends no automatic Inject.",
+    "x": 340,
+    "y": 60,
+    "wires": []
+  },
+  {
+    "id": "matter_topic_light_inject_0",
+    "type": "inject",
+    "z": "matter_topic_light_tab",
+    "name": "On",
+    "props": [
+      {
+        "p": "payload"
+      },
+      {
+        "p": "topic",
+        "vt": "str"
+      }
+    ],
+    "repeat": "",
+    "crontab": "",
+    "once": false,
+    "onceDelay": 0.1,
+    "topic": "living-room/on",
+    "payload": "true",
+    "payloadType": "bool",
+    "x": 180,
+    "y": 160,
+    "wires": [
+      [
+        "matter_topic_light_device"
+      ]
+    ]
+  },
+  {
+    "id": "matter_topic_light_inject_1",
+    "type": "inject",
+    "z": "matter_topic_light_tab",
+    "name": "Off",
+    "props": [
+      {
+        "p": "payload"
+      },
+      {
+        "p": "topic",
+        "vt": "str"
+      }
+    ],
+    "repeat": "",
+    "crontab": "",
+    "once": false,
+    "onceDelay": 0.1,
+    "topic": "living-room/on",
+    "payload": "false",
+    "payloadType": "bool",
+    "x": 180,
+    "y": 220,
+    "wires": [
+      [
+        "matter_topic_light_device"
+      ]
+    ]
+  },
+  {
+    "id": "matter_topic_light_inject_2",
+    "type": "inject",
+    "z": "matter_topic_light_tab",
+    "name": "Brightness 60%",
+    "props": [
+      {
+        "p": "payload"
+      },
+      {
+        "p": "topic",
+        "vt": "str"
+      }
+    ],
+    "repeat": "",
+    "crontab": "",
+    "once": false,
+    "onceDelay": 0.1,
+    "topic": "living-room/brightness",
+    "payload": "60",
+    "payloadType": "num",
+    "x": 180,
+    "y": 280,
+    "wires": [
+      [
+        "matter_topic_light_device"
+      ]
+    ]
+  },
+  {
+    "id": "matter_topic_light_device",
+    "type": "matterUltimateController",
+    "z": "matter_topic_light_tab",
+    "name": "Living room light",
+    "server": "",
+    "enableNodePINS": "yes",
+    "inputs": 1,
+    "outputs": 1,
+    "readStatusAtStartup": "no",
+    "specifySwitchOnBrightness": "no",
+    "enableDayNightLighting": "no",
+    "x": 480,
+    "y": 200,
+    "wires": [
+      [
+        "matter_topic_light_debug"
+      ]
+    ],
+    "serverMatter": "",
+    "matterControllerMode": "single",
+    "matterNodeId": "",
+    "matterEndpointId": 1,
+    "matterDeviceCapabilities": "{}",
+    "GALightSwitch": "living-room/on",
+    "dptLightSwitch": "",
+    "GALightState": "living-room/on/state",
+    "dptLightState": "",
+    "GALightBrightness": "living-room/brightness",
+    "dptLightBrightness": "",
+    "GALightBrightnessState": "living-room/brightness/state",
+    "dptLightBrightnessState": ""
+  },
+  {
+    "id": "matter_topic_light_debug",
+    "type": "debug",
+    "z": "matter_topic_light_tab",
+    "name": "Messages / states",
+    "active": true,
+    "tosidebar": true,
+    "console": false,
+    "tostatus": false,
+    "complete": "true",
+    "targetType": "full",
+    "x": 760,
+    "y": 200,
+    "wires": []
+  }
+]

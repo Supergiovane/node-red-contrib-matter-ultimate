@@ -1,0 +1,86 @@
+---
+layout: wiki
+title: "Matter-Controller-Configuration"
+lang: it
+permalink: /wiki/it-Matter-Controller-Configuration
+---
+# Controller Matter
+
+<div data-matter-controller-overview="hero" style="margin:18px 0 28px;padding:24px;border-radius:16px;background:linear-gradient(135deg,#241047 0%,#5531a7 55%,#8b5cf6 100%);box-shadow:0 14px 30px rgba(36,16,71,0.25);color:#faf7ff;">
+  <div style="font-size:0.72rem;letter-spacing:0.18em;text-transform:uppercase;font-weight:700;color:#e3d7ff;">Fabric Matter · Commissioning · KNX</div>
+  <div style="font-size:1.75rem;line-height:1.15;font-weight:800;margin:8px 0 10px;">La tua fabric Matter, sotto il tuo controllo.</div>
+  <p style="margin:0 0 18px;max-width:860px;line-height:1.6;color:#faf7ff;">Commissiona i dispositivi sulla rete IP e rendi i loro endpoint disponibili a KNX e Node-RED. Associa, monitora, salva e rimuovi da un solo nodo di configurazione.</p>
+  <div style="display:flex;flex-wrap:wrap;gap:10px;">
+    <div style="flex:1 1 150px;min-width:130px;padding:10px 12px;border-radius:10px;background:rgba(255,255,255,0.13);"><strong style="display:block;font-size:1.05rem;color:#fff;">Fabric locale</strong><span style="font-size:0.76rem;color:#eee7ff;">credenziali private</span></div>
+    <div style="flex:1 1 150px;min-width:130px;padding:10px 12px;border-radius:10px;background:rgba(255,255,255,0.13);"><strong style="display:block;font-size:1.05rem;color:#fff;">QR + manuale</strong><span style="font-size:0.76rem;color:#eee7ff;">codici di associazione</span></div>
+    <div style="flex:1 1 150px;min-width:130px;padding:10px 12px;border-radius:10px;background:rgba(255,255,255,0.13);"><strong style="display:block;font-size:1.05rem;color:#fff;">Esporta / Importa</strong><span style="font-size:0.76rem;color:#eee7ff;">backup protetto</span></div>
+  </div>
+</div>
+
+## Un Controller per l’intero ciclo di vita
+
+| Area | Cosa comprende |
+|---|---|
+| **Commissioning** | Payload QR Matter, scansione da webcam o immagine, codice manuale e associazione multi-fabric su WiFi, Ethernet o Thread. |
+| **Gestione dispositivi** | Inventario, stato connessione, rimozione sicura e code comandi indipendenti per dispositivo. |
+| **KNX e Node-RED** | Mappatura endpoint, Modalità Universale, comandi dinamici e monitor batterie universale. |
+| **Resilienza e storage** | Fabric persistente, backup/ripristino, blocco dei device non disponibili e recupero automatico. |
+
+## Primi passi in quattro mosse
+
+1. Aggiungi Matter Controller e fai il **deploy**.
+2. Riaprilo e commissiona un dispositivo con il payload QR Matter o il codice manuale.
+3. Aggiungi **Control Matter from KNX**, quindi scegli il dispositivo e il suo profilo.
+4. Mappa gli indirizzi di gruppo KNX oppure abilita i PIN del flow, quindi fai il deploy.
+
+> **Suggerimento:** preferisci il payload QR `MT:...`: contiene il discriminatore completo, mentre il codice manuale a 11 cifre contiene solo quello corto.
+
+## Panoramica tecnica
+
+Questo nodo di configurazione è un **controller Matter** completo: crea una propria *fabric* Matter e vi associa (commissiona) i tuoi dispositivi Matter. I dispositivi associati diventano poi disponibili ai nodi **Matter Device**, che li mappano sugli indirizzi di gruppo KNX.
+
+Il controller comunica con i dispositivi tramite la **rete IP** (WiFi, Ethernet, oppure Thread attraverso un border router). Il commissioning via Bluetooth non è supportato: il dispositivo deve essere già raggiungibile in rete.
+
+## Associare un dispositivo
+
+1. Fai prima il **deploy** di questo nodo di configurazione (il controller deve essere in esecuzione).
+2. Riapri il nodo e inserisci il **codice di abbinamento**: il codice manuale a 11 cifre (es. `3497-011-2332`) oppure il contenuto del QR code (`MT:....`).
+3. Per un codice inserito manualmente, clicca **ASSOCIA**. Una lettura con **Webcam** o **Immagine** avvia automaticamente l'associazione. Il commissioning può richiedere fino a un minuto.
+
+In alternativa alla digitazione del payload QR, clicca **Webcam** per leggerlo in tempo reale oppure **Immagine** per ricavarlo da una foto locale. Sono supportati sia i QR standard scuri su fondo chiaro sia quelli invertiti bianchi su fondo scuro. La decodifica avviene interamente nel browser; dopo la lettura di un QR Matter valido, l'editor compila il campo del codice e avvia immediatamente l'associazione. Se desideri assegnare un nome, inseriscilo prima della scansione. Un codice digitato manualmente parte ancora soltanto quando clicchi **ASSOCIA**. L'accesso live alla webcam richiede che l'editor sia aperto tramite HTTPS o da `localhost`; quando non è possibile, l'editor spiega il limite e il caricamento dell'immagine rimane disponibile.
+
+Durante il commissioning, un pannello bloccante copre l'editor e impedisce ulteriori clic finché l'operazione non termina con successo o con un errore. La barra di avanzamento segue le fasi reali di matter.js e mostra in inglese l'operazione corrente. Quando il device espone la propria identità di prodotto, il pannello mostra anche nome prodotto, Vendor ID e Product ID.
+
+Se il dispositivo è nuovo di fabbrica e supporta solo il commissioning Bluetooth, associalo prima con l'app del produttore o con un altro controller Matter (Alexa, Google Home, Apple Home), poi usa la funzione **"condividi / abbina con altro hub"** di quel controller per generare un nuovo codice di abbinamento per KNX-Ultimate. In questo modo il dispositivo entra in più fabric contemporaneamente.
+
+Preferisci il payload QR (`MT:...`): contiene il discriminatore completo. Il codice manuale contiene solo quello corto e può selezionare il dispositivo sbagliato quando più modelli identici sono in modalità abbinamento. Associa un dispositivo alla volta.
+
+## Modalità Universale
+
+Nel nodo **Control Matter from KNX**, scegli **Modalità Universale** per osservare tutti i dispositivi con un unico nodo flow. Ha sempre un input e un output e non usa le mappature del singolo endpoint. Il gateway KNX è opzionale e serve solo alle GA allarme/testo del Monitor batterie.
+
+Il **Monitor batterie universale** scansiona tutti i nodi e gli endpoint commissionati cercando Power Source, emette uno snapshot iniziale e conserva lo stato normalizzato completo. Può emettere solo batterie sotto soglia oppure ogni aggiornamento. L'output include percentuale, valore raw, livello di carica, sostituzione, sostituibilità, tensione e identità del device; i metadati Matter raw sono in `msg.matter`. Invia `{payload:{action:"getAllBatteries"}}` per ottenere l'inventario in cache.
+
+Gli input dinamici richiedono `nodeId`, `endpointId`, `clusterId` e `command` oppure `attribute` (a livello principale o sotto `msg.matter`):
+
+- Accensione: `{nodeId:"100", endpointId:1, clusterId:6, command:"on", args:{}}`
+- Lettura: `{nodeId:"100", endpointId:1, clusterId:47, attribute:"batPercentRemaining"}`
+- Scrittura: `{nodeId:"100", endpointId:1, clusterId:513, attribute:"occupiedHeatingSetpoint", value:2100}`
+
+## Archiviazione
+
+Le credenziali della fabric e i dispositivi associati sono salvati nella cartella `knxultimatestorage/matter` dentro la directory utente di Node-RED. Cancellando quella cartella si perdono tutte le associazioni.
+
+Usa **Esporta** per scaricare un backup completo di questa istanza controller. Include fabric, credenziali private, sessioni e dati dei dispositivi associati. **Proteggi il file come una password.** L'importazione sostituisce lo storage Matter di questa istanza e riavvia brevemente il controller. Un backup controller non può essere importato in un bridge.
+
+## Rimuovere un dispositivo
+
+Usa il pulsante cestino nella lista dei dispositivi associati. Il controller prova a decommissionare correttamente il dispositivo; se non è raggiungibile, viene comunque rimosso dalla fabric (potrebbe poi servire un reset di fabbrica del dispositivo).
+
+La lista contiene una riga per ogni nodo attualmente memorizzato nella fabric Matter di questo controller. I Node ID sono univoci all'interno della fabric; gli endpoint esposti da un unico bridge commissionato non sono elencati come dispositivi separati. La colonna dello stato indica se ogni nodo è connesso, disconnesso, in riconnessione o in attesa di rilevamento.
+
+Il controller mantiene separato per ogni dispositivo associato l'ordine dei comandi. Un dispositivo lento, offline o rimosso non può bloccare i comandi destinati agli altri dispositivi. I nodi Controller che puntano ancora a un Node ID rimosso rifiutano subito i nuovi comandi e mostrano **Device no longer commissioned**.
+
+Quando un dispositivo diventa non disponibile, i suoi nodi Controller rimangono bloccati e ignorano gli altri comandi finché quel dispositivo non segnala nuovamente `connected`. Il ripristino è automatico; anche l'apertura dell'editor del nodo dispositivo azzera il blocco per un tentativo manuale.
+
+Nel Monitor batterie universale, le uscite KNX opzionali pubblicano l'allarme complessivo come DPT 1.005 e ciclano ogni 2 secondi i nomi dei device scarichi come testo DPT 16.001 da 14 byte.

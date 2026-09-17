@@ -1,0 +1,18 @@
+<script type="text/javascript" src="resources/node-red-contrib-matter-ultimate/flowMigrationBackup.js"></script>
+<script type="text/javascript" src="resources/node-red-contrib-matter-ultimate/ultimatePackageMigration.js"></script>
+<script type="text/javascript">
+(function () {
+  let migration;
+  RED.plugins.registerPlugin('matterUltimateMigration', {
+    onadd: function () {
+      const options = {"kind": "matter", "title": "MATTER Ultimate", "types": {"matter-config": "matter-ultimate-config", "matterbridge-config": "matter-ultimate-bridge-config", "knxUltimateMatterControllerDevice": "matterUltimateController", "knxUltimateMatterBridge": "matterUltimateBridge"}};
+      options.environment = window;
+      options.backup = window.MatterStandaloneKNXUltimateFlowMigrationBackup;
+      
+      migration = window.UltimatePackageMigration.install(RED, options);
+      window.MatterUltimateMigration = migration;
+    },
+    onremove: function () { if (migration) migration.dispose(); }
+  });
+}());
+</script>

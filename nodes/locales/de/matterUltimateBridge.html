@@ -1,0 +1,80 @@
+<script type="text/markdown" data-help-name="matterUltimateBridge">
+## Dokumentation
+
+Die Nodes arbeiten direkt mit Node-RED-Nachrichten: `msg.topic` bezeichnet die Funktion, `msg.payload` enthält den Wert. KNX Ultimate wird dafür nicht benötigt.
+
+Wähle Bridge-Konfiguration und Gerätetyp und aktiviere die Ports. Eingaben auf **Status-Topics** aktualisieren das virtuelle Gerät; Befehle der Matter-App erscheinen am Ausgang auf **Befehls-Topics**. Im **KNX-Modus** werden App-Befehle auf Befehls-Gruppenadressen geschrieben; KNX-Statusadressen aktualisieren die App.
+
+Beispiel: `msg.topic = "living-room/light/status"`, `msg.payload = true` meldet eine eingeschaltete Leuchte. App-Befehle erscheinen als `msg.topic = "living-room/light/command"` mit booleschem Payload. Verbinde den Ausgang mit der realen Gerätesteuerung und melde den bestätigten Status zurück.
+
+Aktiviere die Ein-/Ausgänge und trage Topic-Namen in die Befehls- und Statusfelder ein. Lass das KNX-Gateway leer; DPT-Felder bleiben ausgeblendet, da sie nicht benötigt werden. Verwende unterschiedliche Topics für Befehle und Status. Die Namen müssen exakt übereinstimmen; Platzhalter werden nicht unterstützt.
+
+### KNX-Modus
+
+**Du kannst das Paket auch mit KNX Ultimate verwenden.** Die Integration ist nativ: Installiere `node-red-contrib-knx-ultimate` und wähle dessen Gateway, um den **KNX-Modus** zu aktivieren. Dieselben Zuordnungsfelder verwenden dann Gruppenadressen und DPTs mit Vorschlägen aus dem importierten ETS-Projekt. Befehle und Status werden direkt über den Bus übertragen; dafür sind keine zusätzlichen Function-Nodes nötig.
+
+Ersetze beim Auswählen eines Gateways die gespeicherten Topics durch echte Gruppenadressen und wähle die passenden DPTs. Ist das ausgewählte Gateway offline, bleibt der Node im KNX-Modus. Entferne die Gateway-Auswahl und konfiguriere die Topics erneut, um wieder Node-RED-Nachrichten zu verwenden.
+
+[Nodes](https://supergiovane.github.io/node-red-contrib-matter-ultimate/de/nodes.html) · [Beispiele](https://supergiovane.github.io/node-red-contrib-matter-ultimate/de/examples.html)
+
+
+---
+
+## Übersicht
+
+Jeder Matter-Bridge-Geräte-Node stellt ein Gerät aus deinem Node-RED-Flow als Matter-Gerät bereit. Wähle eine **Matter Bridge**-Konfiguration, kopple die Bridge mit deiner Matter-App und verbinde die Ein-/Ausgänge mit deiner Gerätesteuerung. Mehrere Geräte-Nodes können dieselbe Bridge verwenden.
+
+**Matter Controller** sendet Befehle an reale Matter-Geräte. **Matter Bridge** stellt Geräte aus deinem Flow einer Matter-App bereit. Beide lassen sich auch über KNX Ultimate mit KNX verbinden.
+
+Das Ändern des Gerätetyps nach der Kopplung der Bridge verändert die Matter-Endpunktstruktur. Controller können den alten Endpunkt als nicht erreichbar behalten; dann die Bridge zurücksetzen/neu koppeln oder ein neues bereitgestelltes Gerät erstellen.
+
+## Konfiguration
+
+Die folgenden Gruppenadressen und DPTs gelten für den **KNX-Modus**. Für Node-RED-Nachrichten verwendest du Topic-Namen in denselben Befehls-/Statusfeldern; DPTs werden nicht benötigt.
+
+|Feld|Beschreibung|
+|--|--|
+| Matter-Bridge | Der Matter-Bridge-Konfigurations-Node, zu dem dieses Gerät gehört |
+| KNX GW | Für Node-RED-Nachrichten leer lassen. Wähle ein KNX-Ultimate-Gateway, um den KNX-Modus mit Gruppenadressen und DPTs zu aktivieren. |
+| Name | Was Alexa & Co. anzeigen und für Sprachbefehle verwenden |
+| Gerätetyp | Der Matter-Gerätetyp (siehe unten); bestimmt, welche Gruppenadress-Felder erscheinen |
+| Status beim Start lesen | Sendet beim Start ein `GroupValue_Read` an die Status-GAs, damit die Matter-Attribute gefüllt sind |
+
+## Gerätetypen und Gruppenadressen
+
+|Typ|Gruppenadressen|
+|--|--|
+| Ein/Aus-Licht, Steckdose | Ein/Aus Befehls-GA, Ein/Aus Status-GA (DPT 1.001) |
+| Dimmbares Licht | + Dimmen % Befehls-/Status-GA (DPT 5.001) |
+| RGB-Farblicht | + RGB-Farbe Befehls-/Status-GA (DPT 232.600). Die Matter-Farbe (Hue/Saturation oder XY, vom Farbrad der App) wird von/zur KNX-RGB-Triplette konvertiert |
+| Tunable-White-Licht | + Farbtemperatur Befehls-/Status-GA in Kelvin (DPT 7.600) |
+| Rollladen / Jalousie | Auf/Ab (DPT 1.008), Stopp (DPT 1.017), Position % Befehl/Status (DPT 5.001), optionale Positionsumkehr |
+| Thermostat (Heizung und/oder Kühlung) | GA aktuelle Temperatur, Sollwert Befehls-/Status-GA (DPT 9.001). Mit zusätzlichem Kühl-Sollwert Befehls-/Status-GA wird auch der Kühlmodus (Doppel-Sollwert) bereitgestellt |
+| Raumklimagerät | Ein Matter-Gerät kombiniert Ein/Aus (DPT 1.001), aktuelle Temperatur und Heiz-/Kühl-Sollwerte (DPT 9.001) sowie Lüftergeschwindigkeit % (DPT 5.001), jeweils als Befehls-/Status-GA |
+| Ventilator / Lüftung | Geschwindigkeit % Befehls-/Status-GA (DPT 5.001) |
+| Türschloss | Verriegeln/Entriegeln Befehls-GA und Verriegelt/Entriegelt Status-GA (DPT 1.001; `true` = verriegelt) |
+| Sensoren (Temperatur, Feuchte, Licht, Präsenz, Kontakt) | Je eine Status-GA |
+| Rauch-/CO-Melder | Rauchalarm Status-GA + optionale CO-Alarm Status-GA (DPT 1.005): kritische Benachrichtigungen auf dem Telefon |
+| Wasserleckmelder | Leckage Status-GA (DPT 1.005) |
+| Luftqualitätssensor (CO2) | CO2 Status-GA in ppm (DPT 9.008); die Luftqualitätsklasse (gut/mäßig/schlecht...) wird automatisch abgeleitet |
+| Saugroboter | **Nur Flow**: keine Gruppenadressen. Aktiviere die Node-PINs: Befehle des Assistenten ("Reinigung starten", Pause/Fortsetzen/zur Basis) kommen am Output als `rvcmode`/`rvccommand` an; melde den Zustand zurück mit `msg.payload = { function: "rvcstate", value: "running"|"docked"|"charging"|"paused"|"error" }` und den Modus mit `function: "rvcmode", value: "cleaning"|"idle"` |
+
+- **Befehls-GA**: wird auf den KNX-Bus geschrieben, wenn der Assistent einen Befehl sendet.
+- **Status-GA**: wird vom Bus gelesen, um die Matter-Attribute (und die Apps) aktuell zu halten.
+
+## Erweiterte Kompatibilität
+
+Diese Optionen werden nur angezeigt, wenn sie zum gewählten Typ passen. Dimmbare Geräte können den Helligkeitsbefehl ignorieren, den manche Controller direkt nach `Ein` senden. Bei Abdeckungen kehrt **Öffnen / Schließen tauschen** sowohl den binären KNX-Befehl als auch die Prozentrichtung um. **Abdeckungsregler-Entprellung** fasst schnelle Zwischenziele vor dem KNX-Schreiben zusammen: `0` nutzt adaptive Fenster (400 ms für den ersten, 150 ms für weitere Befehle); `1`–`5000` erzwingt ein festes Fenster. Die Matter-Position kann außerdem optimistisch aktualisiert und später durch die KNX-Status-GA korrigiert werden.
+
+## Node-PINs
+
+Der PIN-Selektor befindet sich außerhalb der Editor-Tabs. Nach dem Aktivieren erscheint direkt darunter ein kontextbezogener Bereich **Flow-Eingang/-Ausgang** mit kopierbaren Beispielen für den ausgewählten Gerätetyp:
+
+- **Input**: aktualisiere den Matter-Zustand aus dem Flow, ohne den KNX-Bus: `msg.payload = { function: "onoff", value: true }` (`function` ist eine von `onoff`, `level`, `rgb`, `colortemp`, `position`, `temperature`, `humidity`, `illuminance`, `occupancy`, `contact`, `currenttemp`, `setpoint`, `coolingsetpoint`, `fanspeed`, `lock`, `smoke`, `co`, `leak`, `co2`, `rvcstate`, `rvcmode`). Nützlich, um im Flow berechnete Werte (z.B. einen virtuellen Sensor) für Alexa & Co. bereitzustellen.
+- **Output**: Jeder von einem Matter-Controller empfangene Befehl wird an den Flow weitergeleitet: `msg.topic` = Gerätename, `msg.payload` = Wert, `msg.matter` = der rohe Befehl. Ein Gerät ohne Befehls-GAs wird zum **Nur-Flow-Gerät**.
+
+## Hinweise
+
+- Die Matter-Identität des Geräts ist an diesen Node gebunden: Wird der Node gelöscht und neu angelegt, sehen die Apps ein brandneues Gerät.
+- Hinzugefügte/umbenannte/entfernte Device-Nodes werden von den gekoppelten Controllern innerhalb von Sekunden übernommen, ohne die Bridge neu zu koppeln.
+</script>

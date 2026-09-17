@@ -1,0 +1,92 @@
+---
+layout: wiki
+title: "Matter-Bridge"
+lang: zh-CN
+permalink: /wiki/zh-CN-Matter-Bridge
+---
+# Expose KNX to Matter
+
+<div data-matter-bridge-overview="hero" style="margin:18px 0 28px;padding:24px;border-radius:16px;background:linear-gradient(135deg,#073b3a 0%,#087f78 54%,#21b8a6 100%);box-shadow:0 14px 30px rgba(7,59,58,0.25);color:#f2fffd;">
+  <div style="font-size:0.72rem;letter-spacing:0.18em;text-transform:uppercase;font-weight:700;color:#c9fff7;">Matter Bridge · KNX 设备 · 语音助手</div>
+  <div style="font-size:1.75rem;line-height:1.15;font-weight:800;margin:8px 0 10px;">将 KNX 接入 Matter 生态系统。</div>
+  <p style="margin:0 0 18px;max-width:860px;line-height:1.6;color:#f2fffd;">每个节点把一项 KNX 或 Flow 功能转换为原生 Matter 端点，供 Alexa、Google Home、Apple Home 等控制器使用。Bridge 只需配对一次，之后可逐个扩展设备。</p>
+  <div style="display:flex;flex-wrap:wrap;gap:10px;">
+    <div style="flex:1 1 150px;min-width:130px;padding:10px 12px;border-radius:10px;background:rgba(255,255,255,0.13);"><strong style="display:block;font-size:1.05rem;color:#fff;">19</strong><span style="font-size:0.76rem;color:#ddfffa;">种 Matter 设备配置</span></div>
+    <div style="flex:1 1 150px;min-width:130px;padding:10px 12px;border-radius:10px;background:rgba(255,255,255,0.13);"><strong style="display:block;font-size:1.05rem;color:#fff;">只配对一次</strong><span style="font-size:0.76rem;color:#ddfffa;">一个 Bridge 二维码</span></div>
+    <div style="flex:1 1 150px;min-width:130px;padding:10px 12px;border-radius:10px;background:rgba(255,255,255,0.13);"><strong style="display:block;font-size:1.05rem;color:#fff;">实时端点</strong><span style="font-size:0.76rem;color:#ddfffa;">普通更新无需重启</span></div>
+  </div>
+</div>
+
+## 十九种配置，一个 Bridge
+
+| 领域 | Matter 配置 |
+|---|---|
+| **照明与电源** | 开关灯、插座、调光灯、RGB 灯和色温灯。 |
+| **气候与环境** | 温度、湿度、照度、空气质量、温控器、房间空调和风扇。 |
+| **存在与安全** | 人体、门磁、门锁、烟雾/CO 和漏水检测。 |
+| **运动与自动化** | 窗帘/卷帘和由 Flow 驱动的扫地机器人。 |
+
+## 四步开始
+
+1. 配置并部署一个 **Matter Bridge** 配置节点。
+2. 为每个设备或虚拟功能添加一个 **Expose KNX to Matter** 节点。
+3. 选择配置、名称和 KNX 组地址，或启用纯 Flow 引脚。
+4. 用 Matter 控制器扫描 Bridge 二维码；后续端点会实时协调。
+
+> 配对后更换设备配置会改变 Matter 端点结构，可能需要重新配对或创建新的公开设备。
+
+## 技术概述
+
+每个 Expose KNX to Matter 节点将**一个 KNX 设备公开为 Matter 设备**：已配对的控制器（Alexa、Google Home、Apple Home...）会以您输入的名称看到它，随时可通过 App 和语音控制。将它指向一个 **Matter 桥接器**配置节点（真正的桥接器，只需配对一次 - 配对二维码在那里），然后在流程中随意添加任意数量的设备节点。
+
+这与 *Matter Device* 节点方向相反：那里是 KNX 控制 Matter 设备，这里是 Matter 控制器控制 KNX。
+
+桥接器配对后更改设备类型会改变 Matter 端点结构。控制器可能会将旧端点保留为不可达；此时请重置并重新配对桥接器，或创建新的公开设备。
+
+## 配置
+
+|字段|说明|
+|--|--|
+| Matter 桥接器 | 此设备所属的 Matter 桥接器配置节点 |
+| KNX 网关 | 用于报文的 KNX 网关。**可选**：没有网关时，设备通过节点引脚以纯 Flow 模式工作。项目中只有一个网关时会自动选择 |
+| 名称 | Alexa 等显示并用于语音命令的名称 |
+| 设备类型 | Matter 设备类型（见下文）；决定显示哪些组地址字段 |
+| 启动时读取状态 | 启动时向状态 GA 发送 `GroupValue_Read`，以填充 Matter 属性 |
+
+## 设备类型与组地址
+
+|类型|组地址|
+|--|--|
+| 开关灯、插座 | 开/关命令 GA、开/关状态 GA (DPT 1.001) |
+| 调光灯 | + 调光 % 命令/状态 GA (DPT 5.001) |
+| RGB 彩色灯 | + RGB 颜色命令/状态 GA (DPT 232.600)。Matter 颜色（hue/saturation 或 XY，来自 App 的色轮）与 KNX RGB 三元组相互转换 |
+| 色温灯 | + 色温命令/状态 GA，开尔文 (DPT 7.600) |
+| 窗帘/卷帘 | 上/下 (DPT 1.008)、停止 (DPT 1.017)、位置 % 命令/状态 (DPT 5.001)、可选位置反转 |
+| 温控器（采暖和/或制冷） | 当前温度 GA、设定点命令/状态 GA (DPT 9.001)。如再配置制冷设定点命令/状态 GA，则同时提供 Cool 模式（双设定点） |
+| 房间空调 | 一个 Matter 设备组合开/关命令/状态 GA (DPT 1.001)、当前温度与采暖/制冷设定点 (DPT 9.001)，以及风扇速度 % 命令/状态 GA (DPT 5.001) |
+| 风扇/新风 | 速度 % 命令/状态 GA (DPT 5.001) |
+| 门锁 | 锁定/解锁命令 GA 和锁定/解锁状态 GA (DPT 1.001；`true` = 已锁定) |
+| 传感器（温度、湿度、光照、人体、门磁） | 各一个状态 GA |
+| 烟雾/CO 报警器 | 烟雾报警状态 GA + 可选 CO 报警状态 GA (DPT 1.005)：手机上的紧急通知 |
+| 漏水探测器 | 漏水状态 GA (DPT 1.005) |
+| 空气质量传感器 (CO2) | CO2 状态 GA，ppm (DPT 9.008)；空气质量等级（好/一般/中等/差...）自动推导 |
+| 扫地机器人 | **仅 Flow**：无组地址。启用节点引脚：助手的命令（"开始清扫"、暂停/继续/回充）作为 `rvcmode`/`rvccommand` 到达输出；用 `msg.payload = { function: "rvcstate", value: "running"\|"docked"\|"charging"\|"paused"\|"error" }` 报告状态，用 `function: "rvcmode", value: "cleaning"\|"idle"` 报告模式 |
+
+- **命令 GA**：助手发送命令时写入 KNX 总线。
+- **状态 GA**：从总线读取，保持 Matter 属性（和 App）更新。
+
+## 高级兼容性
+
+这些选项只会在适用于所选类型时显示。调光设备可以忽略某些控制器在 `On` 后立即发送的亮度命令。对于窗帘，**交换打开 / 关闭**会同时反转 KNX 二进制命令和百分比方向。**窗帘滑块防抖**会在写入 KNX 前合并快速的中间目标：`0` 使用自适应窗口（首个命令 400 ms，后续命令 150 ms）；`1`–`5000` 使用固定窗口。窗帘还可先乐观更新 Matter 位置，再由 KNX 状态 GA 修正。
+
+## 节点引脚
+
+如果启用节点的输入/输出引脚：
+
+- **输入**：从 Flow 更新 Matter 状态，无需经过 KNX 总线：`msg.payload = { function: "onoff", value: true }`（`function` 为 `onoff`、`level`、`rgb`、`colortemp`、`position`、`temperature`、`humidity`、`illuminance`、`occupancy`、`contact`、`currenttemp`、`setpoint`、`coolingsetpoint`、`fanspeed`、`lock`、`smoke`、`co`、`leak`、`co2`、`rvcstate`、`rvcmode` 之一）。适合把 Flow 中计算的值（如虚拟传感器）公开给 Alexa 等。
+- **输出**：从 Matter 控制器收到的每个命令都转发到 Flow：`msg.topic` = 设备名称，`msg.payload` = 值，`msg.matter` = 原始命令。没有命令 GA 的设备成为**纯 Flow 设备**。
+
+## 说明
+
+- 设备的 Matter 身份与此节点绑定：删除节点并新建一个后，App 会看到一个全新的设备。
+- 添加/重命名/移除的设备节点会在几秒内被已配对的控制器识别，无需重新配对桥接器。

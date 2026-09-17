@@ -1,0 +1,58 @@
+[
+  {
+    "id": "matter_bridge_knx_tab",
+    "type": "tab",
+    "label": "Matter Bridge · KNX",
+    "disabled": false,
+    "info": "Select your Matter Bridge configuration, device type On/Off light and an existing KNX Ultimate gateway. Replace 1/2/1 (command) and 1/2/2 (state), both DPT 1.001, with your ETS addresses. Pair the bridge with your Matter app. App commands write to 1/2/1; feedback from 1/2/2 updates the virtual light. No intermediary Function node is required."
+  },
+  {
+    "id": "matter_bridge_knx_help",
+    "type": "comment",
+    "z": "matter_bridge_knx_tab",
+    "name": "Setup: open this comment before Deploy",
+    "info": "Select your Matter Bridge configuration, device type On/Off light and an existing KNX Ultimate gateway. Replace 1/2/1 (command) and 1/2/2 (state), both DPT 1.001, with your ETS addresses. Pair the bridge with your Matter app. App commands write to 1/2/1; feedback from 1/2/2 updates the virtual light. No intermediary Function node is required.",
+    "x": 340,
+    "y": 60,
+    "wires": []
+  },
+  {
+    "id": "matter_bridge_knx_device",
+    "type": "matterUltimateBridge",
+    "z": "matter_bridge_knx_tab",
+    "name": "Living room virtual light",
+    "server": "",
+    "serverMatterBridge": "",
+    "deviceType": "onofflight",
+    "enableNodePINS": "yes",
+    "inputs": 1,
+    "outputs": 1,
+    "readStatusAtStartup": "no",
+    "gaOnOff": "1/2/1",
+    "gaOnOffStatus": "1/2/2",
+    "dptOnOff": "1.001",
+    "dptOnOffStatus": "1.001",
+    "x": 480,
+    "y": 200,
+    "wires": [
+      [
+        "matter_bridge_knx_debug"
+      ]
+    ]
+  },
+  {
+    "id": "matter_bridge_knx_debug",
+    "type": "debug",
+    "z": "matter_bridge_knx_tab",
+    "name": "Messages / states",
+    "active": true,
+    "tosidebar": true,
+    "console": false,
+    "tostatus": false,
+    "complete": "true",
+    "targetType": "full",
+    "x": 760,
+    "y": 200,
+    "wires": []
+  }
+]

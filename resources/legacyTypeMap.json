@@ -1,0 +1,6 @@
+{
+  "matter-config": "matter-ultimate-config",
+  "matterbridge-config": "matter-ultimate-bridge-config",
+  "knxUltimateMatterControllerDevice": "matterUltimateController",
+  "knxUltimateMatterBridge": "matterUltimateBridge"
+}

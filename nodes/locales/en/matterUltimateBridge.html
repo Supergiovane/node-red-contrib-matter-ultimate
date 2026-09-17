@@ -1,0 +1,80 @@
+<script type="text/markdown" data-help-name="matterUltimateBridge">
+## Documentation
+
+The nodes work directly with Node-RED messages: `msg.topic` identifies the function and `msg.payload` carries its value. KNX Ultimate is not required.
+
+Select the bridge configuration and a device type, then enable the pins. Input messages on **status topics** update the virtual device; commands from the Matter app leave the output on **command topics**. In **KNX mode**, app commands are written to command group addresses and KNX status addresses update the app.
+
+Example: send `msg.topic = "living-room/light/status"`, `msg.payload = true` to report that a lamp is on. An app command appears as `msg.topic = "living-room/light/command"` with a boolean payload. Connect it to your actual device logic and return the confirmed state.
+
+Enable the input/output pins and enter topic names in the command and state fields. Leave the KNX gateway empty; DPT fields are hidden because they are not needed. Use separate command and state topics. Matching is exact; wildcards are not supported.
+
+### KNX mode
+
+**You can also use this package with KNX Ultimate.** The integration is native: install `node-red-contrib-knx-ultimate` and select its gateway to enable **KNX mode**. The same mapping fields then use group addresses and DPTs, with suggestions from the imported ETS project. Commands and feedback pass directly over the bus; no intermediate Function node is needed for these mappings.
+
+When selecting a gateway, replace the saved topics with real group addresses and choose the correct DPTs. A selected gateway that is offline leaves the node in KNX mode. To return to Node-RED messages, clear the gateway and configure the topics again.
+
+[Nodes](https://supergiovane.github.io/node-red-contrib-matter-ultimate/en/nodes.html) · [Examples](https://supergiovane.github.io/node-red-contrib-matter-ultimate/en/examples.html)
+
+
+---
+
+## Overview
+
+Each Matter Bridge device node exposes a device managed by your Node-RED flow as a Matter device. Connect it to a **Matter Bridge** configuration, pair that bridge with your Matter app, and connect the node’s input/output to your device logic. Multiple device nodes can share the bridge.
+
+**Matter Controller** sends commands to real Matter devices. **Matter Bridge** exposes devices from your flow to a Matter app. You can also connect either to KNX through KNX Ultimate.
+
+Changing the device type after the bridge has been paired changes the Matter endpoint structure. Controllers may keep the old endpoint as unreachable; in that case reset/re-pair the bridge or create a new exposed device.
+
+## Configuration
+
+Group addresses and DPTs in the reference below apply to **KNX mode**. For Node-RED messages, use topic names in the same command/state fields; DPTs are not needed.
+
+|Field|Description|
+|--|--|
+| Matter bridge | The Matter Bridge configuration node this device belongs to |
+| KNX GW | Leave empty for Node-RED messages. Select a KNX Ultimate gateway to enable KNX mode and use group addresses and DPTs. |
+| Name | What Alexa & Co. show and use for voice commands |
+| Device type | The Matter device type (see below); it drives which group address fields appear |
+| Read status at startup | Sends a `GroupValue_Read` to the status GAs at startup, so the Matter attributes are populated |
+
+## Device types and group addresses
+
+|Type|Group addresses|
+|--|--|
+| On/Off light, Plug | On/Off command GA, On/Off status GA (DPT 1.001) |
+| Dimmable light | + Dimming % command/status GA (DPT 5.001) |
+| RGB color light | + RGB color command/status GA (DPT 232.600). The Matter color (hue/saturation or XY, from the app color wheel) is converted to/from the KNX RGB triplet |
+| Tunable white light | + Color temperature command/status GA in Kelvin (DPT 7.600) |
+| Cover / Shutter | Up/Down (DPT 1.008), Stop (DPT 1.017), Position % command/status (DPT 5.001), optional position inversion |
+| Thermostat (heating and/or cooling) | Current temperature GA, Setpoint command/status GA (DPT 9.001). Optionally add a Cooling setpoint command/status GA to also expose a Cool mode (dual-setpoint) |
+| Room air conditioner | One Matter device combining On/Off (DPT 1.001), current temperature and heating/cooling setpoints (DPT 9.001), and fan speed % (DPT 5.001) command/status GAs |
+| Fan / Ventilation | Fan speed % command/status GA (DPT 5.001) |
+| Door lock | Lock/Unlock command GA and Locked/Unlocked status GA (DPT 1.001; `true` = locked) |
+| Sensors (temperature, humidity, light, occupancy, contact) | One status GA each |
+| Smoke/CO alarm | Smoke alarm status GA + optional CO alarm status GA (DPT 1.005): critical notifications on the phone |
+| Water leak detector | Leak status GA (DPT 1.005) |
+| Air quality sensor (CO2) | CO2 status GA in ppm (DPT 9.008); the air quality class (good/fair/moderate/poor...) is derived automatically |
+| Robot vacuum | **Flow-only**: no group addresses. Enable the node PINs: assistant commands ("start cleaning", pause/resume/go home) arrive on the output as `rvcmode`/`rvccommand`; report the state back with `msg.payload = { function: "rvcstate", value: "running"|"docked"|"charging"|"paused"|"error" }` and the mode with `function: "rvcmode", value: "cleaning"|"idle"` |
+
+- **Command GA**: written to the KNX bus when the assistant sends a command.
+- **Status GA**: read from the bus to keep the Matter attributes (and the apps) updated.
+
+## Advanced compatibility
+
+These options are hidden unless they apply to the selected type. Dimmable devices can ignore the brightness command that some controllers send immediately after `On`. For covers, **Swap Open / Close** reverses both the binary KNX command and percentage direction. **Cover slider debounce** coalesces rapid intermediate targets before writing to KNX: `0` uses adaptive windows (400 ms for the first command, 150 ms for subsequent commands); `1`–`5000` forces one fixed window. Covers can also optimistically update the Matter position after a command, then correct it when the KNX status GA reports the real position.
+
+## Node PINs
+
+The PIN selector is outside the editor tabs. Enabling it reveals a contextual **Flow input/output** section directly below, with copyable examples filtered to the selected device type:
+
+- **Input**: update the Matter state from the flow, without the KNX bus: `msg.payload = { function: "onoff", value: true }` (`function` is one of `onoff`, `level`, `rgb`, `colortemp`, `position`, `temperature`, `humidity`, `illuminance`, `occupancy`, `contact`, `currenttemp`, `setpoint`, `coolingsetpoint`, `fanspeed`, `lock`, `smoke`, `co`, `leak`, `co2`, `rvcstate`, `rvcmode`). Useful to expose flow-computed values (e.g. a virtual sensor) to Alexa & Co.
+- **Output**: every command received from a Matter controller is forwarded to the flow: `msg.topic` = device name, `msg.payload` = value, `msg.matter` = the raw command. A device without command GAs becomes a **flow-only device**.
+
+## Notes
+
+- The Matter identity of the device is tied to this node: deleting the node and creating a new one makes the apps see a brand-new device.
+- Added/renamed/removed device nodes are picked up by the paired controllers within seconds, without re-pairing the bridge.
+</script>

@@ -1,0 +1,16 @@
+title: "Matter Ultimate"
+description: "Matter Ultimate for Node-RED · Node-RED messages with optional native KNX Ultimate integration"
+url: "https://supergiovane.github.io"
+baseurl: "/node-red-contrib-matter-ultimate"
+repository_url: "https://github.com/Supergiovane/node-red-contrib-matter-ultimate"
+package_name: "node-red-contrib-matter-ultimate"
+markdown: kramdown
+kramdown:
+  input: GFM
+exclude:
+  - wiki
+  - README.md
+  - Gemfile
+  - Gemfile.lock
+  - vendor
+  - _site

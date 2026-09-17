@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1120 280" width="1120" height="280" role="img" aria-labelledby="title desc">
+ <title id="title">MATTER Ultimate</title>
+ <desc id="desc">Original MATTER Ultimate logo: a connected home with a bridge joining devices.</desc>
+ <defs>
+ <linearGradient id="background" x2="1" y2="1"><stop stop-color="#142C43"/><stop offset="1" stop-color="#091522"/></linearGradient>
+ <radialGradient id="aura"><stop stop-color="#EDA7A6" stop-opacity=".12"/><stop offset="1" stop-color="#EDA7A6" stop-opacity="0"/></radialGradient>
+ <linearGradient id="light" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#F9DE85"/><stop offset=".52" stop-color="#F6AE62"/><stop offset="1" stop-color="#E284AB"/></linearGradient>
+ </defs>
+ <rect width="1120" height="280" rx="28" fill="url(#background)"/>
+ <ellipse cx="156" cy="133" rx="240" ry="138" fill="url(#aura)"/>
+ <rect x="12" y="12" width="1096" height="256" rx="19" fill="none" stroke="#EDA7A6" stroke-opacity=".22"/>
+ <g transform="translate(46 36)"><path d="M28 89 100 27l72 62v87H28Z" fill="#102337" stroke="#EDA7A6" stroke-width="9" stroke-linejoin="round"/><path d="M59 136v-23a41 41 0 0 1 82 0v23M59 136h82" fill="none" stroke="#EDA7A6" stroke-width="8" stroke-linecap="round"/>
+  <circle cx="59" cy="136" r="13" fill="#F6D6D2"/><circle cx="141" cy="136" r="13" fill="#F6D6D2"/><circle cx="100" cy="76" r="13" fill="#EDA7A6"/></g>
+ <path d="M267 58v164" stroke="#EDA7A6" stroke-opacity=".28"/>
+ <g font-family="Arial, Helvetica, sans-serif">
+  <text x="307" y="81" fill="#F6D6D2" font-size="15" font-weight="700" letter-spacing="3">MAX SUPERVIBE · NODE-RED</text>
+  <text x="302" y="163" fill="#EDA7A6" font-size="70" font-weight="700" letter-spacing="-2">MATTER</text>
+  <text x="614" y="163" fill="#F8FAFC" font-size="70" font-weight="700" letter-spacing="-2">ULTIMATE</text>
+  <text x="307" y="207" fill="#B6C4D1" font-size="16" letter-spacing="2.1">DEVICES. CONTROLLER. BRIDGE.</text>
+ </g>
+ </svg>

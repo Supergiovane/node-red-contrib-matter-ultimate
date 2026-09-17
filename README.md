@@ -6,13 +6,15 @@
   <img src="docs/assets/brand/logo.svg" alt="Matter Ultimate" width="960">
 </p>
 
-## Matter Controller and Bridge for Node-RED
+## Native Matter integration with KNX Ultimate
 
-Control real Matter devices with **Matter Controller**, or expose devices managed by your flows to a Matter app with **Matter Bridge**.
+**Matter Ultimate extends [KNX Ultimate](https://github.com/Supergiovane/node-red-contrib-knx-ultimate) with native Matter integration.** It carries forward the Matter functionality originally included in KNX Ultimate as a dedicated package, connecting your KNX installation with the Matter ecosystem.
 
-The nodes work directly with Node-RED messages: `msg.topic` identifies the function and `msg.payload` carries its value. KNX Ultimate is not required.
+Its purpose is to serve the KNX Ultimate ecosystem, not to replace or compete with existing general-purpose Matter nodes for Node-RED. Select your KNX Ultimate gateway to map commands and feedback directly to KNX group addresses and DPTs, with suggestions from your imported ETS project.
 
-**You can also use this package with KNX Ultimate.** Its native integration connects commands and feedback directly to your existing KNX gateway, using group addresses and DPTs.
+Use **Matter Controller** to control Matter devices from KNX, or **Matter Bridge** to expose KNX devices to Matter apps. Both nodes share the gateway already configured in KNX Ultimate.
+
+The nodes support standard Node-RED messages: `msg.topic` identifies the function and `msg.payload` carries its value. KNX Ultimate is required only for **KNX mode**; message-based flows work without a KNX gateway.
 
 <br/>
 
@@ -65,7 +67,7 @@ Controller state fields publish their values with the configured topic and `msg.
 
 ## KNX mode
 
-**You can also use this package with KNX Ultimate.** The integration is native: install `node-red-contrib-knx-ultimate` and select its gateway to enable **KNX mode**. The same mapping fields then use group addresses and DPTs, with suggestions from the imported ETS project. Commands and feedback pass directly over the bus; no intermediate Function node is needed for these mappings.
+**Native integration with KNX Ultimate is the core purpose of this package.** Install `node-red-contrib-knx-ultimate` and select its gateway to enable **KNX mode**. The same mapping fields then use group addresses and DPTs, with suggestions from the imported ETS project. Commands and feedback pass directly over the bus; no intermediate Function node is needed for these mappings.
 
 When selecting a gateway, replace the saved topics with real group addresses and choose the correct DPTs. A selected gateway that is offline leaves the node in KNX mode. To return to Node-RED messages, clear the gateway and configure the topics again.
 

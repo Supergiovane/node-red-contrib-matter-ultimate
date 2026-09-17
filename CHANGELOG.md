@@ -1,6 +1,6 @@
 # Changelog
 
-## 1.0.0-beta.0
+## 1.0.0-beta.2
 
 - First public beta. Matter Controller for real devices and Matter Bridge to expose devices from Node-RED.
 - Works with Node-RED messages and offers native integration with KNX Ultimate.

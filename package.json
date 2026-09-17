@@ -9,7 +9,7 @@
   },
   "license": "MIT",
   "name": "node-red-contrib-matter-ultimate",
-  "version": "1.0.0-beta.0",
+  "version": "1.0.0-beta.2",
   "description": "Matter Controller and Bridge for Node-RED, with optional KNX Ultimate integration.",
   "files": [
     "nodes/",

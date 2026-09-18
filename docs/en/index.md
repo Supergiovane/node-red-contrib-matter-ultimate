@@ -11,7 +11,7 @@ The nodes work directly with Node-RED messages: `msg.topic` identifies the funct
 
 ## Installation
 
-This public beta is available to everyone. Install the package from **Manage palette → Install**, then restart Node-RED. Alternatively, run the command below in your Node-RED user directory (usually `~/.node-red`). Requires Node.js 20.18.1 or newer and Node-RED 3.1.1 or newer. Install `node-red-contrib-knx-ultimate` only if you want the KNX integration.
+Install the package from **Manage palette → Install**, then restart Node-RED. Alternatively, run the command below in your Node-RED user directory (usually `~/.node-red`). Requires Node.js 20.18.1 or newer and Node-RED 3.1.1 or newer. Install `node-red-contrib-knx-ultimate` only if you want the KNX integration.
 
 ```sh
 npm install node-red-contrib-matter-ultimate

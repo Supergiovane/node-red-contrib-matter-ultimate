@@ -1,4 +1,4 @@
-# Standalone beta validation
+# Standalone validation
 
 - `npm test`: 241 tests passed, including migration confirmation, backup failure, locked flows, atomic rollback and undo metadata.
 - All registered runtime modules and editor scripts pass the syntax check.
@@ -18,7 +18,7 @@ No production flows or physical devices were modified during these checks.
 - Both packed packages were installed with production dependencies only; KNX Ultimate and the KNX engine were absent. All 18 focused runtime tests passed against that installation.
 - Graphical editor and physical-device checks remain manual.
 
-## Public beta release validation — 2026-09-17
+## Public release validation — 2026-09-17
 
 - Production-only installation of both release tarballs in a fresh directory succeeded.
 - Node-RED 5.0.4 on Node.js 24.13.0 loaded all six runtime/editor node types and both migration plugins, with KNX Ultimate and the KNX engine absent.

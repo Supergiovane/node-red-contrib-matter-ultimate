@@ -11,7 +11,7 @@ I nodi lavorano direttamente con i messaggi Node-RED: `msg.topic` identifica la 
 
 ## Installazione
 
-Questa beta è pubblica e installabile da tutti. Installa il package da **Gestisci palette → Installa**, poi riavvia Node-RED. In alternativa, esegui il comando seguente nella cartella utente di Node-RED (di solito `~/.node-red`). Servono Node.js 20.18.1 o successivo e Node-RED 3.1.1 o successivo. Installa `node-red-contrib-knx-ultimate` solo se vuoi l’integrazione KNX.
+Installa il package da **Gestisci palette → Installa**, poi riavvia Node-RED. In alternativa, esegui il comando seguente nella cartella utente di Node-RED (di solito `~/.node-red`). Servono Node.js 20.18.1 o successivo e Node-RED 3.1.1 o successivo. Installa `node-red-contrib-knx-ultimate` solo se vuoi l’integrazione KNX.
 
 ```sh
 npm install node-red-contrib-matter-ultimate

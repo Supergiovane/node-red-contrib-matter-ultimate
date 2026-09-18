@@ -39,7 +39,7 @@ The nodes support standard Node-RED messages: `msg.topic` identifies the functio
 
 ## Installation
 
-Requires Node.js >=20.18.1 and Node-RED >=3.1.1. This is the first public beta, available to everyone.
+Requires Node.js >=20.18.1 and Node-RED >=3.1.1.
 
 In Node-RED, open **Manage palette → Install**, search for `node-red-contrib-matter-ultimate` and install it. Restart Node-RED.
 

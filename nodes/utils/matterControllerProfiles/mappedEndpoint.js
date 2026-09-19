@@ -29,7 +29,7 @@ const parseMappings = (value, topicMode = false) => {
 }
 
 const setupMappedEndpointProfile = (RED, node, config, options = {}) => {
-  node.name = config.name || node.matterDeviceName || 'Control Matter from KNX'
+  node.name = config.name || node.matterDeviceName || 'Control Matter Devices'
   node.topic = node.name
   node.mappings = parseMappings(config.matterMappings, topicMapping.isTopicMode(config))
   node.knxUltimateAcceptedGAs = [...new Set(node.mappings.map((mapping) => String(mapping.ga).trim()))]
@@ -155,23 +155,23 @@ const setupMappedEndpointProfile = (RED, node, config, options = {}) => {
   if (node.serverKNX) { node.serverKNX.removeClient(node); node.serverKNX.addClient(node) } else status('yellow', 'ring', 'No KNX gateway selected')
   if (node.serverMatter) { node.serverMatter.removeClient(node); node.serverMatter.addClient(node) }
   node.on('input', (msg, send, done) => {
-      if (topicMapping.routeInput(node, config, msg, done, node.mappings.filter(mapping => mapping.direction === 'command').map(mapping => mapping.ga))) return
-    const complete = typeof done === 'function' ? done : () => {}
+    if (topicMapping.routeInput(node, config, msg, done, node.mappings.filter(mapping => mapping.direction === 'command').map(mapping => mapping.ga))) return
+    const complete = typeof done === 'function' ? done : () => { }
     const output = typeof send === 'function' ? send : node.send.bind(node)
     Promise.resolve().then(async () => {
       if (node.matterCommandBlocked === true) throw new Error(node.matterCommandBlockReason || 'Matter device unavailable')
       const semantic = resolveSemanticInput(msg, matterCapabilities)
       const mapping = semantic
         ? {
-            ...semantic.mapping,
-            endpointId: semantic.mapping.endpointId ?? node.matterEndpointId
-          }
+          ...semantic.mapping,
+          endpointId: semantic.mapping.endpointId ?? node.matterEndpointId
+        }
         : {
-            endpointId: msg.endpointId ?? node.matterEndpointId,
-            clusterId: msg.clusterId,
-            targetKind: msg.command !== undefined ? 'command' : 'attribute',
-            target: msg.command ?? msg.attribute
-          }
+          endpointId: msg.endpointId ?? node.matterEndpointId,
+          clusterId: msg.clusterId,
+          targetKind: msg.command !== undefined ? 'command' : 'attribute',
+          target: msg.command ?? msg.attribute
+        }
       if (mapping.target === undefined || mapping.target === null || mapping.target === '' || mapping.clusterId === undefined || mapping.clusterId === null) {
         throw new Error('Matter input requires clusterId and command or attribute')
       }

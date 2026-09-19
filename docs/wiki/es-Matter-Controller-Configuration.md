@@ -4,6 +4,7 @@ title: "Matter-Controller-Configuration"
 lang: es
 permalink: /wiki/es-Matter-Controller-Configuration
 ---
+
 # Controlador Matter
 
 <div data-matter-controller-overview="hero" style="margin:18px 0 28px;padding:24px;border-radius:16px;background:linear-gradient(135deg,#241047 0%,#5531a7 55%,#8b5cf6 100%);box-shadow:0 14px 30px rgba(36,16,71,0.25);color:#faf7ff;">
@@ -19,25 +20,25 @@ permalink: /wiki/es-Matter-Controller-Configuration
 
 ## Un controlador para todo el ciclo de vida
 
-| Área | Funcionalidades |
-|---|---|
-| **Comisionado** | Payload QR Matter, escaneo con webcam o imagen, código manual y emparejado multi-fabric por WiFi, Ethernet o Thread. |
-| **Gestión de dispositivos** | Inventario, estado de conexión, eliminación segura y colas de comandos independientes por dispositivo. |
-| **KNX y Node-RED** | Mapeo de endpoints, Modo universal, comandos dinámicos y monitor universal de baterías. |
-| **Resiliencia y almacenamiento** | Fabric persistente, copia/restauración, bloqueo de dispositivos no disponibles y recuperación automática. |
+| Área                             | Funcionalidades                                                                                                      |
+| -------------------------------- | -------------------------------------------------------------------------------------------------------------------- |
+| **Comisionado**                  | Payload QR Matter, escaneo con webcam o imagen, código manual y emparejado multi-fabric por WiFi, Ethernet o Thread. |
+| **Gestión de dispositivos**      | Inventario, estado de conexión, eliminación segura y colas de comandos independientes por dispositivo.               |
+| **KNX y Node-RED**               | Mapeo de endpoints, Modo universal, comandos dinámicos y monitor universal de baterías.                              |
+| **Resiliencia y almacenamiento** | Fabric persistente, copia/restauración, bloqueo de dispositivos no disponibles y recuperación automática.            |
 
 ## Primeros pasos en cuatro movimientos
 
 1. Añade Matter Controller y haz **deploy**.
 2. Ábrelo de nuevo y comisiona un dispositivo con el payload QR Matter o el código manual.
-3. Añade **Control Matter from KNX** y elige el dispositivo y su perfil.
+3. Añade **Control Matter Devices** y elige el dispositivo y su perfil.
 4. Mapea las direcciones de grupo KNX o habilita los PINes de Node-RED y despliega.
 
 > **Consejo:** prefiere el payload QR `MT:...`: contiene el discriminador completo; el código manual de 11 cifras solo contiene el corto.
 
 ## Vista técnica
 
-Este nodo de configuración es un **controlador Matter** completo: crea su propia *fabric* Matter y empareja (comisiona) tus dispositivos Matter. Los dispositivos emparejados quedan disponibles para los nodos **Matter Device**, que los mapean a direcciones de grupo KNX.
+Este nodo de configuración es un **controlador Matter** completo: crea su propia _fabric_ Matter y empareja (comisiona) tus dispositivos Matter. Los dispositivos emparejados quedan disponibles para los nodos **Matter Device**, que los mapean a direcciones de grupo KNX.
 
 El controlador se comunica con los dispositivos a través de la **red IP** (WiFi, Ethernet o Thread mediante un border router). El emparejamiento por Bluetooth no está soportado: el dispositivo debe estar ya accesible en la red.
 
@@ -57,7 +58,7 @@ Prefiere el payload QR (`MT:...`): contiene el discriminador completo. El códig
 
 ## Modo universal
 
-En **Control Matter from KNX**, elige **Modo universal** para supervisar todos los dispositivos. El gateway KNX es opcional y solo se utiliza para las GA de alarma/texto del monitor.
+En **Control Matter Devices**, elige **Modo universal** para supervisar todos los dispositivos. El gateway KNX es opcional y solo se utiliza para las GA de alarma/texto del monitor.
 
 El **Monitor universal de baterías** analiza todos los nodos y endpoints emparejados buscando Power Source, emite una instantánea inicial y conserva el estado normalizado completo. Puede emitir solo baterías bajo el umbral o cada actualización. `{payload:{action:"getAllBatteries"}}` devuelve el inventario en caché; los metadatos Matter raw están en `msg.matter`.
 

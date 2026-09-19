@@ -39,7 +39,7 @@ module.exports = function (RED) {
     matterCommandGateEndpointRegistered = true
   }
 
-  function matterUltimateController (config) {
+  function matterUltimateController(config) {
     RED.nodes.createNode(this, config)
     const node = this
     node.serverKNX = RED.nodes.getNode(config.server) || undefined
@@ -69,7 +69,7 @@ module.exports = function (RED) {
     // in the Hue Light node and is kept UNCHANGED: it speaks Hue-native state objects,
     // and this boundary translates them to the Matter engine (strategy/adapter).
     node.serverHue = {
-      get linkStatus () { return node.serverMatter ? node.serverMatter.linkStatus : 'disconnected' },
+      get linkStatus() { return node.serverMatter ? node.serverMatter.linkStatus : 'disconnected' },
       hueManager: {
         writeHueQueueAdd: (_lightID, _state, _operation) => {
           try {
@@ -107,7 +107,7 @@ module.exports = function (RED) {
       config.dptLightKelvinPercentageState = config.dptLightHSVState
     }
 
-    node.name = config.name || node.matterDeviceName || 'Control Matter from KNX'
+    node.name = config.name || node.matterDeviceName || 'Control Matter Devices'
     node.topic = node.name
     node.outputtopic = node.name
     node.dpt = ''
@@ -219,7 +219,7 @@ module.exports = function (RED) {
       return `${d.getDate()}, ${d.toLocaleTimeString()}`
     }
 
-    node.syncCurrentHUEDeviceFromKNXState = function syncCurrentHUEDeviceFromKNXState (_state) { // Starting from v 4.1.31
+    node.syncCurrentHUEDeviceFromKNXState = function syncCurrentHUEDeviceFromKNXState(_state) { // Starting from v 4.1.31
       if (config.updateLocalStateFromKNXWrite !== true) return // Starting from v 4.1.31
       if (_state === undefined || _state === null || typeof _state !== 'object') return // Starting from v 4.1.31
       if (node.currentHUEDevice === undefined || node.currentHUEDevice === null) return // Starting from v 4.1.31
@@ -268,7 +268,7 @@ module.exports = function (RED) {
       } catch (error) { }
     }
 
-    node.writeHueState = function writeHueState (_state) {
+    node.writeHueState = function writeHueState(_state) {
       if (node.matterCommandBlocked === true) return
       const defaultOperation = node.isGrouped_light === false ? 'setLight' : 'setGroupedLight'
       const isGroupedLightOff = node.isGrouped_light === true && node.currentHUEDevice?.on?.on === false
@@ -335,7 +335,7 @@ module.exports = function (RED) {
       })()
     }
 
-    node.deleteHueStateQueue = function deleteHueStateQueue () {
+    node.deleteHueStateQueue = function deleteHueStateQueue() {
       node.serverHue.hueManager.deleteHueQueue(node.hueDevice)
       if (node.isGrouped_light !== true) return;
 
@@ -353,7 +353,7 @@ module.exports = function (RED) {
       })()
     }
 
-    function getRandomIntInclusive (min, max) {
+    function getRandomIntInclusive(min, max) {
       min = Math.ceil(min)
       max = Math.floor(max)
       return Math.floor(Math.random() * (max - min + 1) + min) // The maximum is inclusive and the minimum is inclusive
@@ -857,7 +857,7 @@ module.exports = function (RED) {
 
     // Start dimming
     // ***********************************************************
-    node.hueDimming = function hueDimming (_KNXaction, _KNXbrightness_Direction, _dimSpeedInMillisecs = undefined) {
+    node.hueDimming = function hueDimming(_KNXaction, _KNXbrightness_Direction, _dimSpeedInMillisecs = undefined) {
       // 31/10/2023 after many attempts to use dimming_delta function of the HueApeV2, loosing days of my life, without a decent success, will use the standard dimming calculations
       // i decide to go to the "step brightness" way.
       try {
@@ -946,7 +946,7 @@ module.exports = function (RED) {
     // Start dimming tunable white
     // mirek: required(integer minimum: 153, maximum: 500)
     // ***********************************************************
-    node.hueDimmingTunableWhite = function hueDimmingTunableWhite (_KNXaction, _KNXbrightness_DirectionTunableWhite, _dimSpeedInMillisecsTunableWhite = undefined) {
+    node.hueDimmingTunableWhite = function hueDimmingTunableWhite(_KNXaction, _KNXbrightness_DirectionTunableWhite, _dimSpeedInMillisecsTunableWhite = undefined) {
       // 23/23/2023 after many attempts to use dimming_delta function of the HueApeV2, loosing days of my life, without a decent success, will use the standard dimming calculations
       // i decide to go to the "step brightness" way.
       try {
@@ -1020,7 +1020,7 @@ module.exports = function (RED) {
   * @param {number} _dimSpeedInMillisecsHSV Speed time in milliseconds
   * @returns {}
   */
-    node.hueDimmingHSV_H = function hueDimmingHSV_H (_KNXaction, _KNXbrightness_DirectionHSV_H, _dimSpeedInMillisecsHSV = undefined) {
+    node.hueDimmingHSV_H = function hueDimmingHSV_H(_KNXaction, _KNXbrightness_DirectionHSV_H, _dimSpeedInMillisecsHSV = undefined) {
       // After many attempts to use dimming_delta function of the HueApiV2, loosing days of my life, without a decent success, will use the standard dimming calculations
       // i decide to go to the "step brightness" way.
       try {
@@ -1108,7 +1108,7 @@ module.exports = function (RED) {
   * @param {number} _dimSpeedInMillisecsHSV Speed time in milliseconds
   * @returns {}
   */
-    node.hueDimmingHSV_S = function hueDimmingHSV_S (_KNXaction, _KNXbrightness_DirectionHSV_S, _dimSpeedInMillisecsHSV = undefined) {
+    node.hueDimmingHSV_S = function hueDimmingHSV_S(_KNXaction, _KNXbrightness_DirectionHSV_S, _dimSpeedInMillisecsHSV = undefined) {
       // After many attempts to use dimming_delta function of the HueApiV2, loosing days of my life, without a decent success, will use the standard dimming calculations
       // i decide to go to the "step brightness" way.
       try {
@@ -1356,7 +1356,7 @@ module.exports = function (RED) {
     // ---- Matter -> KNX feedback (replaces the Hue event stream) -----------------
     // Applies a feedback patch from the shim: updates the synthetic currentHUEDevice
     // and reuses the very same updateKNX* writers of the Hue-born logic below.
-    node.applyMatterFeedback = function applyMatterFeedback (patch, _outputtype = 'write') {
+    node.applyMatterFeedback = function applyMatterFeedback(patch, _outputtype = 'write') {
       if (!patch || node.currentHUEDevice === undefined) return
       const dev = node.currentHUEDevice
       const zeroBrightnessWhenOff = (config.updateKNXBrightnessStatusOnHUEOnOff === undefined || config.updateKNXBrightnessStatusOnHUEOnOff === 'onhueoff')
@@ -1394,7 +1394,7 @@ module.exports = function (RED) {
     node.handleMatterClusterEvent = () => { }
     node.handleMatterNodeInitialized = () => { }
 
-    node.updateKNXBrightnessState = function updateKNXBrightnessState (_value, _outputtype = 'write') {
+    node.updateKNXBrightnessState = function updateKNXBrightnessState(_value, _outputtype = 'write') {
       if (config.GALightBrightnessState !== undefined && config.GALightBrightnessState !== '') {
         const knxMsgPayload = {}
         knxMsgPayload.topic = config.GALightBrightnessState
@@ -1422,7 +1422,7 @@ module.exports = function (RED) {
       }
     }
 
-    node.updateKNXLightState = function updateKNXLightState (_value, _outputtype = 'write') {
+    node.updateKNXLightState = function updateKNXLightState(_value, _outputtype = 'write') {
       try {
         const knxMsgPayload = {}
         knxMsgPayload.topic = config.GALightState
@@ -1432,7 +1432,7 @@ module.exports = function (RED) {
           // Check not to have already sent the value
           // Send to KNX bus
           if (knxMsgPayload.topic !== '' && knxMsgPayload.topic !== undefined) {
-          topicMapping.publishState(node, config, knxMsgPayload.topic, knxMsgPayload.payload)
+            topicMapping.publishState(node, config, knxMsgPayload.topic, knxMsgPayload.payload)
             if (node.serverKNX !== null && node.serverKNX !== undefined) {
               node.serverKNX.sendKNXTelegramToKNXEngine({
                 grpaddr: knxMsgPayload.topic,
@@ -1455,7 +1455,7 @@ module.exports = function (RED) {
       }
     }
 
-    node.updateKNXLightKelvinPercentageState = function updateKNXLightKelvinPercentageState (_value, _outputtype = 'write') {
+    node.updateKNXLightKelvinPercentageState = function updateKNXLightKelvinPercentageState(_value, _outputtype = 'write') {
       if (config.GALightKelvinPercentageState !== undefined && config.GALightKelvinPercentageState !== '') {
         const knxMsgPayload = {}
         knxMsgPayload.topic = config.GALightKelvinPercentageState
@@ -1562,7 +1562,7 @@ module.exports = function (RED) {
     * @param {string} _outputtype "write" is the default KNX command
     * @returns {}
     */
-    node.updateKNXLightColorState = function updateKNXLightColorState (_value, _outputtype = 'write') {
+    node.updateKNXLightColorState = function updateKNXLightColorState(_value, _outputtype = 'write') {
       if (config.GALightColorState !== undefined && config.GALightColorState !== '') {
         if (_value.xy === undefined || _value.xy.x === undefined) return
         const knxMsgPayload = {}
@@ -1577,7 +1577,7 @@ module.exports = function (RED) {
           knxMsgPayload.payload = { red: knxMsgPayload.payload.r, green: knxMsgPayload.payload.g, blue: knxMsgPayload.payload.b }
           // Send to KNX bus
           if (knxMsgPayload.topic !== '' && knxMsgPayload.topic !== undefined) {
-          topicMapping.publishState(node, config, knxMsgPayload.topic, knxMsgPayload.payload)
+            topicMapping.publishState(node, config, knxMsgPayload.topic, knxMsgPayload.payload)
             if (node.serverKNX !== null && node.serverKNX !== undefined) {
               node.serverKNX.sendKNXTelegramToKNXEngine({
                 grpaddr: knxMsgPayload.topic,
@@ -1654,7 +1654,7 @@ module.exports = function (RED) {
       }
     }
 
-    node.updateKNXLightKelvinState = function updateKNXLightKelvinState (_value, _outputtype = 'write') {
+    node.updateKNXLightKelvinState = function updateKNXLightKelvinState(_value, _outputtype = 'write') {
       if (config.GALightKelvinState !== undefined && config.GALightKelvinState !== '') {
         const knxMsgPayload = {}
         const kelvinValue = 0

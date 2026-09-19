@@ -4,7 +4,8 @@ title: "Matter-Bridge"
 lang: es
 permalink: /wiki/es-Matter-Bridge
 ---
-# Expose KNX to Matter
+
+# Expose to matter
 
 <div data-matter-bridge-overview="hero" style="margin:18px 0 28px;padding:24px;border-radius:16px;background:linear-gradient(135deg,#073b3a 0%,#087f78 54%,#21b8a6 100%);box-shadow:0 14px 30px rgba(7,59,58,0.25);color:#f2fffd;">
   <div style="font-size:0.72rem;letter-spacing:0.18em;text-transform:uppercase;font-weight:700;color:#c9fff7;">Matter Bridge · Dispositivos KNX · Asistentes de voz</div>
@@ -19,17 +20,17 @@ permalink: /wiki/es-Matter-Bridge
 
 ## Diecinueve perfiles, un solo bridge
 
-| Área | Perfiles Matter |
-|---|---|
-| **Iluminación y potencia** | Luz On/Off, enchufe, luz regulable, RGB y blanco dinámico. |
-| **Clima y ambiente** | Temperatura, humedad, luminosidad, calidad del aire, termostato, aire acondicionado de habitación y ventilador. |
-| **Presencia y seguridad** | Presencia, contacto, cerradura de puerta, humo/CO y fuga de agua. |
-| **Movimiento y automatización** | Persiana/cortina y robot aspirador controlado por el flow. |
+| Área                            | Perfiles Matter                                                                                                 |
+| ------------------------------- | --------------------------------------------------------------------------------------------------------------- |
+| **Iluminación y potencia**      | Luz On/Off, enchufe, luz regulable, RGB y blanco dinámico.                                                      |
+| **Clima y ambiente**            | Temperatura, humedad, luminosidad, calidad del aire, termostato, aire acondicionado de habitación y ventilador. |
+| **Presencia y seguridad**       | Presencia, contacto, cerradura de puerta, humo/CO y fuga de agua.                                               |
+| **Movimiento y automatización** | Persiana/cortina y robot aspirador controlado por el flow.                                                      |
 
 ## Primeros pasos en cuatro movimientos
 
 1. Configura y despliega un nodo de configuración **Matter Bridge**.
-2. Añade un nodo **Expose KNX to Matter** por cada dispositivo o función virtual.
+2. Añade un nodo **Expose to matter** por cada dispositivo o función virtual.
 3. Elige perfil, nombre y direcciones de grupo KNX, o habilita los PINes solo-flow.
 4. Empareja el QR del bridge con el controlador Matter; los endpoints posteriores se concilian en vivo.
 
@@ -37,40 +38,40 @@ permalink: /wiki/es-Matter-Bridge
 
 ## Vista técnica
 
-Cada nodo Expose KNX to Matter expone **un dispositivo KNX como dispositivo Matter**: los controladores emparejados (Alexa, Google Home, Apple Home...) lo ven, con el nombre que hayas elegido, listo para el control por app y por voz. Apúntalo a un nodo de configuración **Bridge Matter** (el bridge en sí, emparejado una sola vez - el QR de emparejamiento vive allí) y añade tantos nodos de dispositivo como quieras, en cualquier flow.
+Cada nodo Expose to matter expone **un dispositivo KNX como dispositivo Matter**: los controladores emparejados (Alexa, Google Home, Apple Home...) lo ven, con el nombre que hayas elegido, listo para el control por app y por voz. Apúntalo a un nodo de configuración **Bridge Matter** (el bridge en sí, emparejado una sola vez - el QR de emparejamiento vive allí) y añade tantos nodos de dispositivo como quieras, en cualquier flow.
 
-Es la dirección opuesta al nodo *Matter Device*: allí KNX controla un dispositivo Matter, aquí los controladores Matter controlan KNX.
+Es la dirección opuesta al nodo _Matter Device_: allí KNX controla un dispositivo Matter, aquí los controladores Matter controlan KNX.
 
 Cambiar el tipo de dispositivo después de emparejar el bridge modifica la estructura del endpoint Matter. Los controladores pueden conservar el endpoint antiguo como no alcanzable; en ese caso, restablece/vuelve a emparejar el bridge o crea un nuevo dispositivo expuesto.
 
 ## Configuración
 
-|Campo|Descripción|
-|--|--|
-| Bridge Matter | El nodo de configuración Bridge Matter al que pertenece este dispositivo |
-| GW KNX | Gateway KNX usado para los telegramas. **Opcional**: sin él, el dispositivo funciona en modo solo-flow mediante los PINes del nodo. Se selecciona automáticamente si el proyecto tiene un solo gateway |
-| Nombre | Lo que Alexa y cía. muestran y usan para los comandos de voz |
-| Tipo de dispositivo | El tipo de dispositivo Matter (ver abajo); determina qué campos de dirección de grupo aparecen |
-| Leer estado al inicio | Envía un `GroupValue_Read` a las GA de estado al inicio, para poblar los atributos Matter |
+| Campo                 | Descripción                                                                                                                                                                                            |
+| --------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| Bridge Matter         | El nodo de configuración Bridge Matter al que pertenece este dispositivo                                                                                                                               |
+| GW KNX                | Gateway KNX usado para los telegramas. **Opcional**: sin él, el dispositivo funciona en modo solo-flow mediante los PINes del nodo. Se selecciona automáticamente si el proyecto tiene un solo gateway |
+| Nombre                | Lo que Alexa y cía. muestran y usan para los comandos de voz                                                                                                                                           |
+| Tipo de dispositivo   | El tipo de dispositivo Matter (ver abajo); determina qué campos de dirección de grupo aparecen                                                                                                         |
+| Leer estado al inicio | Envía un `GroupValue_Read` a las GA de estado al inicio, para poblar los atributos Matter                                                                                                              |
 
 ## Tipos de dispositivo y direcciones de grupo
 
-|Tipo|Direcciones de grupo|
-|--|--|
-| Luz On/Off, Enchufe | GA comando On/Off, GA estado On/Off (DPT 1.001) |
-| Luz regulable | + GA comando/estado regulación % (DPT 5.001) |
-| Luz RGB (color) | + GA comando/estado color RGB (DPT 232.600). El color Matter (hue/saturation o XY, de la rueda de color de la app) se convierte desde/hacia la terna RGB KNX |
-| Luz blanco dinámico | + GA comando/estado temperatura de color en Kelvin (DPT 7.600) |
-| Persiana / Cortina | Subir/Bajar (DPT 1.008), Stop (DPT 1.017), posición % comando/estado (DPT 5.001), inversión de posición opcional |
-| Termostato (calefacción y/o refrigeración) | GA temperatura actual, GA comando/estado consigna (DPT 9.001). Añadiendo también la GA comando/estado consigna de refrigeración se expone también el modo Cool (doble consigna) |
-| Aire acondicionado de habitación | Un dispositivo Matter combina GA comando/estado On/Off (DPT 1.001), temperatura actual y consignas de calefacción/refrigeración (DPT 9.001), y velocidad del ventilador % (DPT 5.001) |
-| Ventilador / VMC | GA comando/estado velocidad % (DPT 5.001) |
-| Cerradura de puerta | GA comando bloqueo/desbloqueo y GA estado bloqueado/desbloqueado (DPT 1.001; `true` = bloqueada) |
-| Sensores (temperatura, humedad, luz, presencia, contacto) | Una GA de estado cada uno |
-| Alarma humo/CO | GA estado alarma de humo + GA estado alarma CO opcional (DPT 1.005): notificaciones críticas en el teléfono |
-| Detector de fugas de agua | GA estado fuga (DPT 1.005) |
-| Sensor de calidad del aire (CO2) | GA estado CO2 en ppm (DPT 9.008); la clase de calidad del aire (buena/regular/moderada/mala...) se deriva automáticamente |
-| Robot aspirador | **Solo-flow**: sin direcciones de grupo. Habilita los PINes del nodo: los comandos del asistente ("inicia la limpieza", pausa/reanudar/volver a la base) llegan a la salida como `rvcmode`/`rvccommand`; informa el estado con `msg.payload = { function: "rvcstate", value: "running"\|"docked"\|"charging"\|"paused"\|"error" }` y el modo con `function: "rvcmode", value: "cleaning"\|"idle"` |
+| Tipo                                                      | Direcciones de grupo                                                                                                                                                                                                                                                                                                                                                                              |
+| --------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Luz On/Off, Enchufe                                       | GA comando On/Off, GA estado On/Off (DPT 1.001)                                                                                                                                                                                                                                                                                                                                                   |
+| Luz regulable                                             | + GA comando/estado regulación % (DPT 5.001)                                                                                                                                                                                                                                                                                                                                                      |
+| Luz RGB (color)                                           | + GA comando/estado color RGB (DPT 232.600). El color Matter (hue/saturation o XY, de la rueda de color de la app) se convierte desde/hacia la terna RGB KNX                                                                                                                                                                                                                                      |
+| Luz blanco dinámico                                       | + GA comando/estado temperatura de color en Kelvin (DPT 7.600)                                                                                                                                                                                                                                                                                                                                    |
+| Persiana / Cortina                                        | Subir/Bajar (DPT 1.008), Stop (DPT 1.017), posición % comando/estado (DPT 5.001), inversión de posición opcional                                                                                                                                                                                                                                                                                  |
+| Termostato (calefacción y/o refrigeración)                | GA temperatura actual, GA comando/estado consigna (DPT 9.001). Añadiendo también la GA comando/estado consigna de refrigeración se expone también el modo Cool (doble consigna)                                                                                                                                                                                                                   |
+| Aire acondicionado de habitación                          | Un dispositivo Matter combina GA comando/estado On/Off (DPT 1.001), temperatura actual y consignas de calefacción/refrigeración (DPT 9.001), y velocidad del ventilador % (DPT 5.001)                                                                                                                                                                                                             |
+| Ventilador / VMC                                          | GA comando/estado velocidad % (DPT 5.001)                                                                                                                                                                                                                                                                                                                                                         |
+| Cerradura de puerta                                       | GA comando bloqueo/desbloqueo y GA estado bloqueado/desbloqueado (DPT 1.001; `true` = bloqueada)                                                                                                                                                                                                                                                                                                  |
+| Sensores (temperatura, humedad, luz, presencia, contacto) | Una GA de estado cada uno                                                                                                                                                                                                                                                                                                                                                                         |
+| Alarma humo/CO                                            | GA estado alarma de humo + GA estado alarma CO opcional (DPT 1.005): notificaciones críticas en el teléfono                                                                                                                                                                                                                                                                                       |
+| Detector de fugas de agua                                 | GA estado fuga (DPT 1.005)                                                                                                                                                                                                                                                                                                                                                                        |
+| Sensor de calidad del aire (CO2)                          | GA estado CO2 en ppm (DPT 9.008); la clase de calidad del aire (buena/regular/moderada/mala...) se deriva automáticamente                                                                                                                                                                                                                                                                         |
+| Robot aspirador                                           | **Solo-flow**: sin direcciones de grupo. Habilita los PINes del nodo: los comandos del asistente ("inicia la limpieza", pausa/reanudar/volver a la base) llegan a la salida como `rvcmode`/`rvccommand`; informa el estado con `msg.payload = { function: "rvcstate", value: "running"\|"docked"\|"charging"\|"paused"\|"error" }` y el modo con `function: "rvcmode", value: "cleaning"\|"idle"` |
 
 - **GA de comando**: se escribe en el bus KNX cuando el asistente envía un comando.
 - **GA de estado**: se lee del bus para mantener actualizados los atributos Matter (y las apps).

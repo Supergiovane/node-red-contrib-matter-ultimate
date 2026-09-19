@@ -93,7 +93,7 @@ describe('Matter Controller editor flow-input section', () => {
       expect(messages.matterUltimateController.input_help_light_hint, `${locale}:light hint`).to.be.a('string').and.not.equal('')
 
       const help = fs.readFileSync(path.join(projectRoot, 'nodes/locales', locale, 'matterUltimateController.html'), 'utf8')
-      const wikiName = locale === 'en' ? 'Control Matter from KNX.md' : `${locale}-Control Matter from KNX.md`
+      const wikiName = locale === 'en' ? 'Control Matter Devices.md' : `${locale}-Control Matter Devices.md`
       const wiki = fs.readFileSync(path.join(projectRoot, 'docs/wiki', wikiName), 'utf8')
       expect(help, `${locale}:help`).to.include('{function,value}')
       expect(wiki, `${locale}:wiki`).to.include('{function,value}')

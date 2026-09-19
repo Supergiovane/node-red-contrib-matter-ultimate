@@ -4,6 +4,7 @@ title: "Matter-Controller-Configuration"
 lang: zh-CN
 permalink: /wiki/zh-CN-Matter-Controller-Configuration
 ---
+
 # Matter 控制器
 
 <div data-matter-controller-overview="hero" style="margin:18px 0 28px;padding:24px;border-radius:16px;background:linear-gradient(135deg,#241047 0%,#5531a7 55%,#8b5cf6 100%);box-shadow:0 14px 30px rgba(36,16,71,0.25);color:#faf7ff;">
@@ -19,25 +20,25 @@ permalink: /wiki/zh-CN-Matter-Controller-Configuration
 
 ## 一个控制器覆盖完整生命周期
 
-| 领域 | 功能范围 |
-|---|---|
-| **配网** | Matter QR Payload、摄像头或图片扫描、手动代码，以及通过 WiFi、以太网或 Thread 的多 Fabric 配对。 |
-| **设备管理** | 已配对设备清单、连接状态、安全移除和每台设备独立的命令队列。 |
-| **KNX 与 Node-RED** | 端点映射、通用模式、动态命令和通用电池监视器。 |
-| **可靠性与存储** | 持久化 Fabric、实例备份/恢复、不可用设备门控和自动恢复。 |
+| 领域                | 功能范围                                                                                         |
+| ------------------- | ------------------------------------------------------------------------------------------------ |
+| **配网**            | Matter QR Payload、摄像头或图片扫描、手动代码，以及通过 WiFi、以太网或 Thread 的多 Fabric 配对。 |
+| **设备管理**        | 已配对设备清单、连接状态、安全移除和每台设备独立的命令队列。                                     |
+| **KNX 与 Node-RED** | 端点映射、通用模式、动态命令和通用电池监视器。                                                   |
+| **可靠性与存储**    | 持久化 Fabric、实例备份/恢复、不可用设备门控和自动恢复。                                         |
 
 ## 四步开始
 
 1. 添加 Matter Controller 并先**部署**。
 2. 重新打开，用 Matter QR Payload 或手动配对码配网一台设备。
-3. 添加 **Control Matter from KNX**，选择设备及其配置。
+3. 添加 **Control Matter Devices**，选择设备及其配置。
 4. 映射 KNX 组地址，或启用 Node-RED 引脚，然后部署。
 
 > **提示：**优先使用 `MT:...` QR Payload：它包含完整判别器，而 11 位手动代码只包含短判别器。
 
 ## 技术概述
 
-此配置节点是一个完整的 **Matter 控制器**：它创建自己的 Matter *fabric* 并将您的 Matter 设备配对（调试）进来。配对后的设备可供 **Matter Device** 节点使用，将它们映射到 KNX 组地址。
+此配置节点是一个完整的 **Matter 控制器**：它创建自己的 Matter _fabric_ 并将您的 Matter 设备配对（调试）进来。配对后的设备可供 **Matter Device** 节点使用，将它们映射到 KNX 组地址。
 
 控制器通过 **IP 网络**（WiFi、以太网或经边界路由器的 Thread）与设备通信。不支持蓝牙配对：设备必须已经可以通过网络访问。
 
@@ -57,7 +58,7 @@ permalink: /wiki/zh-CN-Matter-Controller-Configuration
 
 ## 通用模式
 
-在 **Control Matter from KNX** 中选择 **通用模式** 可监视所有设备。KNX 网关为可选，仅用于电池监视器的报警/文本组地址。
+在 **Control Matter Devices** 中选择 **通用模式** 可监视所有设备。KNX 网关为可选，仅用于电池监视器的报警/文本组地址。
 
 **通用电池监视器** 会扫描所有已配对 node 和 endpoint 的 Power Source，输出初始快照并缓存完整的标准化电池状态。它可仅输出低于阈值的电池或每次更新。发送 `{payload:{action:"getAllBatteries"}}` 可获取缓存清单；原始 Matter 元数据位于 `msg.matter`。
 

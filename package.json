@@ -9,7 +9,7 @@
   },
   "license": "MIT",
   "name": "node-red-contrib-matter-ultimate",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Native Matter integration with KNX Ultimate for Node-RED: control Matter devices from KNX and expose KNX devices to Matter apps with Controller and Bridge nodes.",
   "files": [
     "nodes/",

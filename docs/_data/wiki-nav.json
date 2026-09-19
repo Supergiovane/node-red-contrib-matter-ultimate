@@ -109,7 +109,7 @@
           "external": false
         },
         {
-          "label": "Control Matter from KNX",
+          "label": "Control Matter Devices",
           "url": "/wiki/Control%20Matter%20from%20KNX",
           "external": false
         },
@@ -119,7 +119,7 @@
           "external": false
         },
         {
-          "label": "Expose KNX to Matter",
+          "label": "Expose to matter",
           "url": "/wiki/Matter-Bridge",
           "external": false
         }
@@ -406,7 +406,7 @@
           "external": false
         },
         {
-          "label": "Control Matter from KNX",
+          "label": "Control Matter Devices",
           "url": "/wiki/it-Control%20Matter%20from%20KNX",
           "external": false
         },
@@ -416,7 +416,7 @@
           "external": false
         },
         {
-          "label": "Expose KNX to Matter",
+          "label": "Expose to matter",
           "url": "/wiki/it-Matter-Bridge",
           "external": false
         }
@@ -703,7 +703,7 @@
           "external": false
         },
         {
-          "label": "Control Matter from KNX",
+          "label": "Control Matter Devices",
           "url": "/wiki/de-Control%20Matter%20from%20KNX",
           "external": false
         },
@@ -713,7 +713,7 @@
           "external": false
         },
         {
-          "label": "Expose KNX to Matter",
+          "label": "Expose to matter",
           "url": "/wiki/de-Matter-Bridge",
           "external": false
         }
@@ -1000,7 +1000,7 @@
           "external": false
         },
         {
-          "label": "Control Matter from KNX",
+          "label": "Control Matter Devices",
           "url": "/wiki/fr-Control%20Matter%20from%20KNX",
           "external": false
         },
@@ -1010,7 +1010,7 @@
           "external": false
         },
         {
-          "label": "Expose KNX to Matter",
+          "label": "Expose to matter",
           "url": "/wiki/fr-Matter-Bridge",
           "external": false
         }
@@ -1297,7 +1297,7 @@
           "external": false
         },
         {
-          "label": "Control Matter from KNX",
+          "label": "Control Matter Devices",
           "url": "/wiki/es-Control%20Matter%20from%20KNX",
           "external": false
         },
@@ -1307,7 +1307,7 @@
           "external": false
         },
         {
-          "label": "Expose KNX to Matter",
+          "label": "Expose to matter",
           "url": "/wiki/es-Matter-Bridge",
           "external": false
         }

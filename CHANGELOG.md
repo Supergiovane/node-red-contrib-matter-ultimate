@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.0.2
+
+- Fixed old palette node names
+
 ## 1.0.0-beta.2
 
 - First public beta. Matter Controller for real devices and Matter Bridge to expose devices from Node-RED.

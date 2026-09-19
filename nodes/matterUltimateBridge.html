@@ -142,9 +142,9 @@
       outputs: 0,
       icon: 'node-matter-bridge-icon.svg',
       label() {
-        return this.name || 'Expose KNX to Matter';
+        return this.name || 'Expose to Matter';
       },
-      paletteLabel: 'Expose KNX to Matter',
+      paletteLabel: 'Expose to Matter',
       oneditprepare() {
         try { RED.sidebar.show('help'); } catch (error) { /* empty */ }
         const node = this;

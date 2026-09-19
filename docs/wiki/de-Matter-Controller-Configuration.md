@@ -4,6 +4,7 @@ title: "Matter-Controller-Configuration"
 lang: de
 permalink: /wiki/de-Matter-Controller-Configuration
 ---
+
 # Matter Controller
 
 <div data-matter-controller-overview="hero" style="margin:18px 0 28px;padding:24px;border-radius:16px;background:linear-gradient(135deg,#241047 0%,#5531a7 55%,#8b5cf6 100%);box-shadow:0 14px 30px rgba(36,16,71,0.25);color:#faf7ff;">
@@ -19,25 +20,25 @@ permalink: /wiki/de-Matter-Controller-Configuration
 
 ## Ein Controller für den gesamten Lebenszyklus
 
-| Bereich | Funktionsumfang |
-|---|---|
-| **Kommissionierung** | Matter-QR-Payload, Webcam- oder Bildscan, manueller Code und Multi-Fabric-Kopplung über WLAN, Ethernet oder Thread. |
-| **Geräteverwaltung** | Inventar, Verbindungsstatus, sichere Entfernung und unabhängige Befehlswarteschlangen pro Gerät. |
-| **KNX & Node-RED** | Endpunkt-Mappings, Universeller Modus, dynamische Befehle und universeller Batteriemonitor. |
-| **Ausfallsicherheit & Speicher** | Persistente Fabric, Backup/Wiederherstellung, Gerätesperre und automatische Erholung. |
+| Bereich                          | Funktionsumfang                                                                                                     |
+| -------------------------------- | ------------------------------------------------------------------------------------------------------------------- |
+| **Kommissionierung**             | Matter-QR-Payload, Webcam- oder Bildscan, manueller Code und Multi-Fabric-Kopplung über WLAN, Ethernet oder Thread. |
+| **Geräteverwaltung**             | Inventar, Verbindungsstatus, sichere Entfernung und unabhängige Befehlswarteschlangen pro Gerät.                    |
+| **KNX & Node-RED**               | Endpunkt-Mappings, Universeller Modus, dynamische Befehle und universeller Batteriemonitor.                         |
+| **Ausfallsicherheit & Speicher** | Persistente Fabric, Backup/Wiederherstellung, Gerätesperre und automatische Erholung.                               |
 
 ## Start in vier Schritten
 
 1. Matter Controller hinzufügen und **deployen**.
 2. Erneut öffnen und ein Gerät per Matter-QR-Payload oder manuellem Code kommissionieren.
-3. **Control Matter from KNX** hinzufügen, dann Gerät und Profil wählen.
+3. **Control Matter Devices** hinzufügen, dann Gerät und Profil wählen.
 4. KNX-Gruppenadressen abbilden oder Node-RED-PINs aktivieren und deployen.
 
 > **Tipp:** Den QR-Payload `MT:...` bevorzugen: Er enthält den vollständigen Diskriminator, der 11-stellige manuelle Code nur den kurzen.
 
 ## Technische Übersicht
 
-Dieser Konfigurations-Node ist ein vollwertiger **Matter-Controller**: Er erstellt seine eigene Matter-*Fabric* und koppelt (kommissioniert) deine Matter-Geräte. Die gekoppelten Geräte stehen anschließend den **Matter Device**-Nodes zur Verfügung, die sie auf KNX-Gruppenadressen abbilden.
+Dieser Konfigurations-Node ist ein vollwertiger **Matter-Controller**: Er erstellt seine eigene Matter-_Fabric_ und koppelt (kommissioniert) deine Matter-Geräte. Die gekoppelten Geräte stehen anschließend den **Matter Device**-Nodes zur Verfügung, die sie auf KNX-Gruppenadressen abbilden.
 
 Der Controller kommuniziert mit den Geräten über das **IP-Netzwerk** (WLAN, Ethernet oder Thread über einen Border Router). Bluetooth-Kommissionierung wird nicht unterstützt: Das Gerät muss bereits im Netzwerk erreichbar sein.
 
@@ -57,7 +58,7 @@ Bevorzuge den QR-Payload (`MT:...`): Er enthält den vollständigen Diskriminato
 
 ## Universeller Modus
 
-Wähle in **Control Matter from KNX** den **Universellen Modus**, um alle Geräte zu überwachen. Ein KNX-Gateway ist optional und wird nur für die Alarm-/Text-GAs des Batteriemonitors benötigt.
+Wähle in **Control Matter Devices** den **Universellen Modus**, um alle Geräte zu überwachen. Ein KNX-Gateway ist optional und wird nur für die Alarm-/Text-GAs des Batteriemonitors benötigt.
 
 Der **Universelle Batteriemonitor** durchsucht alle gekoppelten Nodes und Endpunkte nach Power Source, sendet einen anfänglichen Snapshot und speichert den vollständigen normalisierten Batteriestatus. Er kann nur Batterien unter dem Schwellwert oder jede Aktualisierung ausgeben. `{payload:{action:"getAllBatteries"}}` liefert das Cache-Inventar; rohe Matter-Metadaten stehen in `msg.matter`.
 

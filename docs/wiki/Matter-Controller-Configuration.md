@@ -4,6 +4,7 @@ title: "Matter-Controller-Configuration"
 lang: en
 permalink: /wiki/Matter-Controller-Configuration
 ---
+
 # Matter Controller
 
 <div data-matter-controller-overview="hero" style="margin:18px 0 28px;padding:24px;border-radius:16px;background:linear-gradient(135deg,#241047 0%,#5531a7 55%,#8b5cf6 100%);box-shadow:0 14px 30px rgba(36,16,71,0.25);color:#faf7ff;">
@@ -19,25 +20,25 @@ permalink: /wiki/Matter-Controller-Configuration
 
 ## One controller, the complete lifecycle
 
-| Area | What it covers |
-|---|---|
-| **Commissioning** | Matter QR payload, webcam or image scan, manual code and multi-fabric pairing over WiFi, Ethernet or Thread. |
-| **Device management** | Device inventory, connection state, safe removal and independent per-device command queues. |
-| **KNX & Node-RED** | Endpoint mappings, Universal Mode, dynamic commands and the universal battery monitor. |
-| **Resilience & storage** | Persistent fabric, instance backup/restore, unavailable-device gate and automatic recovery. |
+| Area                     | What it covers                                                                                               |
+| ------------------------ | ------------------------------------------------------------------------------------------------------------ |
+| **Commissioning**        | Matter QR payload, webcam or image scan, manual code and multi-fabric pairing over WiFi, Ethernet or Thread. |
+| **Device management**    | Device inventory, connection state, safe removal and independent per-device command queues.                  |
+| **KNX & Node-RED**       | Endpoint mappings, Universal Mode, dynamic commands and the universal battery monitor.                       |
+| **Resilience & storage** | Persistent fabric, instance backup/restore, unavailable-device gate and automatic recovery.                  |
 
 ## Start in four steps
 
 1. Add and **deploy** Matter Controller.
 2. Reopen it and commission one device with its Matter QR payload or manual code.
-3. Add **Control Matter from KNX**, then choose the device and its profile.
+3. Add **Control Matter Devices**, then choose the device and its profile.
 4. Map the KNX group addresses or enable the Node-RED flow pins, then deploy.
 
 > **Tip:** prefer the `MT:...` QR payload: it contains the full discriminator, while the 11-digit manual code contains only the short discriminator.
 
 ## Technical overview
 
-This configuration node is a full **Matter controller**: it creates its own Matter *fabric* and commissions (pairs) your Matter devices into it. The paired devices are then available to the **Matter Device** nodes, which map them to KNX group addresses.
+This configuration node is a full **Matter controller**: it creates its own Matter _fabric_ and commissions (pairs) your Matter devices into it. The paired devices are then available to the **Matter Device** nodes, which map them to KNX group addresses.
 
 The controller talks to the devices over the **IP network** (WiFi, Ethernet, or Thread through a border router). Bluetooth commissioning is not supported: the device must already be reachable on the network.
 
@@ -57,7 +58,7 @@ Prefer the QR payload (`MT:...`): it contains the full discriminator. A manual c
 
 ## Universal Mode
 
-In **Control Matter from KNX**, choose **Universal Mode** to observe every commissioned device through one flow node. It always exposes one input and one output and does not use endpoint mappings. A KNX gateway is optional and is used only by the Battery Monitor alarm/text GAs.
+In **Control Matter Devices**, choose **Universal Mode** to observe every commissioned device through one flow node. It always exposes one input and one output and does not use endpoint mappings. A KNX gateway is optional and is used only by the Battery Monitor alarm/text GAs.
 
 The **Universal Battery Monitor** scans all commissioned nodes and endpoints for Power Source clusters, emits an initial snapshot and caches complete normalized battery state. It can emit only batteries below a percentage threshold or every update. Output includes percent, raw percent, charge level, replacement state, replaceability, voltage and device identity; raw Matter metadata is in `msg.matter`. Send `{payload:{action:"getAllBatteries"}}` to retrieve the cached inventory.
 

@@ -4,6 +4,7 @@ title: "Matter-Controller-Configuration"
 lang: fr
 permalink: /wiki/fr-Matter-Controller-Configuration
 ---
+
 # Contrôleur Matter
 
 <div data-matter-controller-overview="hero" style="margin:18px 0 28px;padding:24px;border-radius:16px;background:linear-gradient(135deg,#241047 0%,#5531a7 55%,#8b5cf6 100%);box-shadow:0 14px 30px rgba(36,16,71,0.25);color:#faf7ff;">
@@ -19,25 +20,25 @@ permalink: /wiki/fr-Matter-Controller-Configuration
 
 ## Un contrôleur pour tout le cycle de vie
 
-| Domaine | Fonctionnalités |
-|---|---|
-| **Commissionnement** | Payload QR Matter, scan webcam ou image, code manuel et appairage multi-fabric via WiFi, Ethernet ou Thread. |
-| **Gestion des appareils** | Inventaire, état de connexion, suppression sûre et files de commandes indépendantes par appareil. |
-| **KNX et Node-RED** | Mapping des endpoints, Mode universel, commandes dynamiques et moniteur universel de batteries. |
-| **Résilience et stockage** | Fabric persistante, sauvegarde/restauration, blocage des appareils indisponibles et reprise automatique. |
+| Domaine                    | Fonctionnalités                                                                                              |
+| -------------------------- | ------------------------------------------------------------------------------------------------------------ |
+| **Commissionnement**       | Payload QR Matter, scan webcam ou image, code manuel et appairage multi-fabric via WiFi, Ethernet ou Thread. |
+| **Gestion des appareils**  | Inventaire, état de connexion, suppression sûre et files de commandes indépendantes par appareil.            |
+| **KNX et Node-RED**        | Mapping des endpoints, Mode universel, commandes dynamiques et moniteur universel de batteries.              |
+| **Résilience et stockage** | Fabric persistante, sauvegarde/restauration, blocage des appareils indisponibles et reprise automatique.     |
 
 ## Démarrer en quatre étapes
 
 1. Ajoutez Matter Controller et **déployez-le**.
 2. Rouvrez-le et commissionnez un appareil avec son payload QR Matter ou son code manuel.
-3. Ajoutez **Control Matter from KNX**, puis choisissez l’appareil et son profil.
+3. Ajoutez **Control Matter Devices**, puis choisissez l’appareil et son profil.
 4. Mappez les adresses de groupe KNX ou activez les PIN Node-RED, puis déployez.
 
 > **Conseil :** préférez le payload QR `MT:...` : il contient le discriminateur complet, tandis que le code manuel à 11 chiffres ne contient que le discriminateur court.
 
 ## Vue technique
 
-Ce nœud de configuration est un **contrôleur Matter** complet : il crée sa propre *fabric* Matter et y appaire (commissionne) vos appareils Matter. Les appareils appairés sont ensuite disponibles pour les nœuds **Matter Device**, qui les mappent sur des adresses de groupe KNX.
+Ce nœud de configuration est un **contrôleur Matter** complet : il crée sa propre _fabric_ Matter et y appaire (commissionne) vos appareils Matter. Les appareils appairés sont ensuite disponibles pour les nœuds **Matter Device**, qui les mappent sur des adresses de groupe KNX.
 
 Le contrôleur communique avec les appareils via le **réseau IP** (WiFi, Ethernet ou Thread via un border router). L'appairage Bluetooth n'est pas pris en charge : l'appareil doit déjà être joignable sur le réseau.
 
@@ -57,7 +58,7 @@ Préférez le payload QR (`MT:...`) : il contient le discriminateur complet. Le 
 
 ## Mode universel
 
-Dans **Control Matter from KNX**, choisissez **Mode universel** pour surveiller tous les appareils. La passerelle KNX est optionnelle et sert uniquement aux GA alarme/texte du moniteur.
+Dans **Control Matter Devices**, choisissez **Mode universel** pour surveiller tous les appareils. La passerelle KNX est optionnelle et sert uniquement aux GA alarme/texte du moniteur.
 
 Le **Moniteur universel de batteries** analyse tous les nœuds et endpoints appairés pour Power Source, émet un instantané initial et conserve l'état normalisé complet. Il peut n'émettre que les batteries sous le seuil ou chaque mise à jour. `{payload:{action:"getAllBatteries"}}` renvoie l'inventaire en cache ; les métadonnées Matter brutes sont dans `msg.matter`.
 

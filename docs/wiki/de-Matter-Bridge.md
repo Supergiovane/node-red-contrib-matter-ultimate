@@ -4,7 +4,8 @@ title: "Matter-Bridge"
 lang: de
 permalink: /wiki/de-Matter-Bridge
 ---
-# Expose KNX to Matter
+
+# Expose to matter
 
 <div data-matter-bridge-overview="hero" style="margin:18px 0 28px;padding:24px;border-radius:16px;background:linear-gradient(135deg,#073b3a 0%,#087f78 54%,#21b8a6 100%);box-shadow:0 14px 30px rgba(7,59,58,0.25);color:#f2fffd;">
   <div style="font-size:0.72rem;letter-spacing:0.18em;text-transform:uppercase;font-weight:700;color:#c9fff7;">Matter Bridge · KNX-Geräte · Sprachassistenten</div>
@@ -19,17 +20,17 @@ permalink: /wiki/de-Matter-Bridge
 
 ## Neunzehn Profile, eine Bridge
 
-| Bereich | Matter-Profile |
-|---|---|
-| **Licht & Leistung** | Ein/Aus-Licht, Steckdose, dimmbares Licht, RGB-Licht und Tunable White. |
-| **Klima & Umwelt** | Temperatur, Feuchte, Helligkeit, Luftqualität, Thermostat, Raumklimagerät und Ventilator. |
-| **Präsenz & Sicherheit** | Präsenz, Kontakt, Türschloss, Rauch/CO und Wasserleck. |
-| **Bewegung & Automation** | Rollladen/Jalousie und Flow-gesteuerter Saugroboter. |
+| Bereich                   | Matter-Profile                                                                            |
+| ------------------------- | ----------------------------------------------------------------------------------------- |
+| **Licht & Leistung**      | Ein/Aus-Licht, Steckdose, dimmbares Licht, RGB-Licht und Tunable White.                   |
+| **Klima & Umwelt**        | Temperatur, Feuchte, Helligkeit, Luftqualität, Thermostat, Raumklimagerät und Ventilator. |
+| **Präsenz & Sicherheit**  | Präsenz, Kontakt, Türschloss, Rauch/CO und Wasserleck.                                    |
+| **Bewegung & Automation** | Rollladen/Jalousie und Flow-gesteuerter Saugroboter.                                      |
 
 ## Start in vier Schritten
 
 1. Einen **Matter Bridge**-Konfigurations-Node konfigurieren und deployen.
-2. Für jedes Gerät oder jede virtuelle Funktion einen **Expose KNX to Matter**-Node hinzufügen.
+2. Für jedes Gerät oder jede virtuelle Funktion einen **Expose to matter**-Node hinzufügen.
 3. Profil, Name und KNX-Gruppenadressen wählen oder Nur-Flow-PINs aktivieren.
 4. Den Bridge-QR-Code mit dem Matter-Controller koppeln; weitere Endpunkte werden live abgeglichen.
 
@@ -37,40 +38,40 @@ permalink: /wiki/de-Matter-Bridge
 
 ## Technische Übersicht
 
-Jeder Expose KNX to Matter Node stellt **ein KNX-Gerät als Matter-Gerät** bereit: Die gekoppelten Controller (Alexa, Google Home, Apple Home...) sehen es mit dem von dir vergebenen Namen — bereit für App- und Sprachsteuerung. Verweise ihn auf einen **Matter Bridge**-Konfigurations-Node (die eigentliche Bridge, einmal gekoppelt - der Kopplungs-QR-Code lebt dort) und füge beliebig viele Device-Nodes hinzu, überall in deinen Flows.
+Jeder Expose to matter Node stellt **ein KNX-Gerät als Matter-Gerät** bereit: Die gekoppelten Controller (Alexa, Google Home, Apple Home...) sehen es mit dem von dir vergebenen Namen — bereit für App- und Sprachsteuerung. Verweise ihn auf einen **Matter Bridge**-Konfigurations-Node (die eigentliche Bridge, einmal gekoppelt - der Kopplungs-QR-Code lebt dort) und füge beliebig viele Device-Nodes hinzu, überall in deinen Flows.
 
-Das ist die Gegenrichtung zum *Matter Device*-Node: Dort steuert KNX ein Matter-Gerät, hier steuern Matter-Controller KNX.
+Das ist die Gegenrichtung zum _Matter Device_-Node: Dort steuert KNX ein Matter-Gerät, hier steuern Matter-Controller KNX.
 
 Das Ändern des Gerätetyps nach der Kopplung der Bridge verändert die Matter-Endpunktstruktur. Controller können den alten Endpunkt als nicht erreichbar behalten; dann die Bridge zurücksetzen/neu koppeln oder ein neues bereitgestelltes Gerät erstellen.
 
 ## Konfiguration
 
-|Feld|Beschreibung|
-|--|--|
-| Matter-Bridge | Der Matter-Bridge-Konfigurations-Node, zu dem dieses Gerät gehört |
-| KNX GW | KNX-Gateway für die Telegramme. **Optional**: Ohne läuft das Gerät im Nur-Flow-Modus über die Node-PINs. Wird automatisch gewählt, wenn das Projekt nur ein Gateway hat |
-| Name | Was Alexa & Co. anzeigen und für Sprachbefehle verwenden |
-| Gerätetyp | Der Matter-Gerätetyp (siehe unten); bestimmt, welche Gruppenadress-Felder erscheinen |
-| Status beim Start lesen | Sendet beim Start ein `GroupValue_Read` an die Status-GAs, damit die Matter-Attribute gefüllt sind |
+| Feld                    | Beschreibung                                                                                                                                                            |
+| ----------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Matter-Bridge           | Der Matter-Bridge-Konfigurations-Node, zu dem dieses Gerät gehört                                                                                                       |
+| KNX GW                  | KNX-Gateway für die Telegramme. **Optional**: Ohne läuft das Gerät im Nur-Flow-Modus über die Node-PINs. Wird automatisch gewählt, wenn das Projekt nur ein Gateway hat |
+| Name                    | Was Alexa & Co. anzeigen und für Sprachbefehle verwenden                                                                                                                |
+| Gerätetyp               | Der Matter-Gerätetyp (siehe unten); bestimmt, welche Gruppenadress-Felder erscheinen                                                                                    |
+| Status beim Start lesen | Sendet beim Start ein `GroupValue_Read` an die Status-GAs, damit die Matter-Attribute gefüllt sind                                                                      |
 
 ## Gerätetypen und Gruppenadressen
 
-|Typ|Gruppenadressen|
-|--|--|
-| Ein/Aus-Licht, Steckdose | Ein/Aus Befehls-GA, Ein/Aus Status-GA (DPT 1.001) |
-| Dimmbares Licht | + Dimmen % Befehls-/Status-GA (DPT 5.001) |
-| RGB-Farblicht | + RGB-Farbe Befehls-/Status-GA (DPT 232.600). Die Matter-Farbe (Hue/Saturation oder XY, vom Farbrad der App) wird von/zur KNX-RGB-Triplette konvertiert |
-| Tunable-White-Licht | + Farbtemperatur Befehls-/Status-GA in Kelvin (DPT 7.600) |
-| Rollladen / Jalousie | Auf/Ab (DPT 1.008), Stopp (DPT 1.017), Position % Befehl/Status (DPT 5.001), optionale Positionsumkehr |
-| Thermostat (Heizung und/oder Kühlung) | GA aktuelle Temperatur, Sollwert Befehls-/Status-GA (DPT 9.001). Mit zusätzlichem Kühl-Sollwert Befehls-/Status-GA wird auch der Kühlmodus (Doppel-Sollwert) bereitgestellt |
-| Raumklimagerät | Ein Matter-Gerät kombiniert Ein/Aus (DPT 1.001), aktuelle Temperatur und Heiz-/Kühl-Sollwerte (DPT 9.001) sowie Lüftergeschwindigkeit % (DPT 5.001), jeweils als Befehls-/Status-GA |
-| Ventilator / Lüftung | Geschwindigkeit % Befehls-/Status-GA (DPT 5.001) |
-| Türschloss | Verriegeln/Entriegeln Befehls-GA und Verriegelt/Entriegelt Status-GA (DPT 1.001; `true` = verriegelt) |
-| Sensoren (Temperatur, Feuchte, Licht, Präsenz, Kontakt) | Je eine Status-GA |
-| Rauch-/CO-Melder | Rauchalarm Status-GA + optionale CO-Alarm Status-GA (DPT 1.005): kritische Benachrichtigungen auf dem Telefon |
-| Wasserleckmelder | Leckage Status-GA (DPT 1.005) |
-| Luftqualitätssensor (CO2) | CO2 Status-GA in ppm (DPT 9.008); die Luftqualitätsklasse (gut/mäßig/schlecht...) wird automatisch abgeleitet |
-| Saugroboter | **Nur Flow**: keine Gruppenadressen. Aktiviere die Node-PINs: Befehle des Assistenten ("Reinigung starten", Pause/Fortsetzen/zur Basis) kommen am Output als `rvcmode`/`rvccommand` an; melde den Zustand zurück mit `msg.payload = { function: "rvcstate", value: "running"|"docked"|"charging"|"paused"|"error" }` und den Modus mit `function: "rvcmode", value: "cleaning"|"idle"` |
+| Typ                                                     | Gruppenadressen                                                                                                                                                                                                                                                              |
+| ------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------- | ---------- | -------- | ------------------------------------------------------------------ | ------- |
+| Ein/Aus-Licht, Steckdose                                | Ein/Aus Befehls-GA, Ein/Aus Status-GA (DPT 1.001)                                                                                                                                                                                                                            |
+| Dimmbares Licht                                         | + Dimmen % Befehls-/Status-GA (DPT 5.001)                                                                                                                                                                                                                                    |
+| RGB-Farblicht                                           | + RGB-Farbe Befehls-/Status-GA (DPT 232.600). Die Matter-Farbe (Hue/Saturation oder XY, vom Farbrad der App) wird von/zur KNX-RGB-Triplette konvertiert                                                                                                                      |
+| Tunable-White-Licht                                     | + Farbtemperatur Befehls-/Status-GA in Kelvin (DPT 7.600)                                                                                                                                                                                                                    |
+| Rollladen / Jalousie                                    | Auf/Ab (DPT 1.008), Stopp (DPT 1.017), Position % Befehl/Status (DPT 5.001), optionale Positionsumkehr                                                                                                                                                                       |
+| Thermostat (Heizung und/oder Kühlung)                   | GA aktuelle Temperatur, Sollwert Befehls-/Status-GA (DPT 9.001). Mit zusätzlichem Kühl-Sollwert Befehls-/Status-GA wird auch der Kühlmodus (Doppel-Sollwert) bereitgestellt                                                                                                  |
+| Raumklimagerät                                          | Ein Matter-Gerät kombiniert Ein/Aus (DPT 1.001), aktuelle Temperatur und Heiz-/Kühl-Sollwerte (DPT 9.001) sowie Lüftergeschwindigkeit % (DPT 5.001), jeweils als Befehls-/Status-GA                                                                                          |
+| Ventilator / Lüftung                                    | Geschwindigkeit % Befehls-/Status-GA (DPT 5.001)                                                                                                                                                                                                                             |
+| Türschloss                                              | Verriegeln/Entriegeln Befehls-GA und Verriegelt/Entriegelt Status-GA (DPT 1.001; `true` = verriegelt)                                                                                                                                                                        |
+| Sensoren (Temperatur, Feuchte, Licht, Präsenz, Kontakt) | Je eine Status-GA                                                                                                                                                                                                                                                            |
+| Rauch-/CO-Melder                                        | Rauchalarm Status-GA + optionale CO-Alarm Status-GA (DPT 1.005): kritische Benachrichtigungen auf dem Telefon                                                                                                                                                                |
+| Wasserleckmelder                                        | Leckage Status-GA (DPT 1.005)                                                                                                                                                                                                                                                |
+| Luftqualitätssensor (CO2)                               | CO2 Status-GA in ppm (DPT 9.008); die Luftqualitätsklasse (gut/mäßig/schlecht...) wird automatisch abgeleitet                                                                                                                                                                |
+| Saugroboter                                             | **Nur Flow**: keine Gruppenadressen. Aktiviere die Node-PINs: Befehle des Assistenten ("Reinigung starten", Pause/Fortsetzen/zur Basis) kommen am Output als `rvcmode`/`rvccommand` an; melde den Zustand zurück mit `msg.payload = { function: "rvcstate", value: "running" | "docked" | "charging" | "paused" | "error" }`und den Modus mit`function: "rvcmode", value: "cleaning" | "idle"` |
 
 - **Befehls-GA**: wird auf den KNX-Bus geschrieben, wenn der Assistent einen Befehl sendet.
 - **Status-GA**: wird vom Bus gelesen, um die Matter-Attribute (und die Apps) aktuell zu halten.

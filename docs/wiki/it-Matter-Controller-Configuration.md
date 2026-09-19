@@ -4,6 +4,7 @@ title: "Matter-Controller-Configuration"
 lang: it
 permalink: /wiki/it-Matter-Controller-Configuration
 ---
+
 # Controller Matter
 
 <div data-matter-controller-overview="hero" style="margin:18px 0 28px;padding:24px;border-radius:16px;background:linear-gradient(135deg,#241047 0%,#5531a7 55%,#8b5cf6 100%);box-shadow:0 14px 30px rgba(36,16,71,0.25);color:#faf7ff;">
@@ -19,25 +20,25 @@ permalink: /wiki/it-Matter-Controller-Configuration
 
 ## Un Controller per l’intero ciclo di vita
 
-| Area | Cosa comprende |
-|---|---|
-| **Commissioning** | Payload QR Matter, scansione da webcam o immagine, codice manuale e associazione multi-fabric su WiFi, Ethernet o Thread. |
-| **Gestione dispositivi** | Inventario, stato connessione, rimozione sicura e code comandi indipendenti per dispositivo. |
-| **KNX e Node-RED** | Mappatura endpoint, Modalità Universale, comandi dinamici e monitor batterie universale. |
-| **Resilienza e storage** | Fabric persistente, backup/ripristino, blocco dei device non disponibili e recupero automatico. |
+| Area                     | Cosa comprende                                                                                                            |
+| ------------------------ | ------------------------------------------------------------------------------------------------------------------------- |
+| **Commissioning**        | Payload QR Matter, scansione da webcam o immagine, codice manuale e associazione multi-fabric su WiFi, Ethernet o Thread. |
+| **Gestione dispositivi** | Inventario, stato connessione, rimozione sicura e code comandi indipendenti per dispositivo.                              |
+| **KNX e Node-RED**       | Mappatura endpoint, Modalità Universale, comandi dinamici e monitor batterie universale.                                  |
+| **Resilienza e storage** | Fabric persistente, backup/ripristino, blocco dei device non disponibili e recupero automatico.                           |
 
 ## Primi passi in quattro mosse
 
 1. Aggiungi Matter Controller e fai il **deploy**.
 2. Riaprilo e commissiona un dispositivo con il payload QR Matter o il codice manuale.
-3. Aggiungi **Control Matter from KNX**, quindi scegli il dispositivo e il suo profilo.
+3. Aggiungi **Control Matter Devices**, quindi scegli il dispositivo e il suo profilo.
 4. Mappa gli indirizzi di gruppo KNX oppure abilita i PIN del flow, quindi fai il deploy.
 
 > **Suggerimento:** preferisci il payload QR `MT:...`: contiene il discriminatore completo, mentre il codice manuale a 11 cifre contiene solo quello corto.
 
 ## Panoramica tecnica
 
-Questo nodo di configurazione è un **controller Matter** completo: crea una propria *fabric* Matter e vi associa (commissiona) i tuoi dispositivi Matter. I dispositivi associati diventano poi disponibili ai nodi **Matter Device**, che li mappano sugli indirizzi di gruppo KNX.
+Questo nodo di configurazione è un **controller Matter** completo: crea una propria _fabric_ Matter e vi associa (commissiona) i tuoi dispositivi Matter. I dispositivi associati diventano poi disponibili ai nodi **Matter Device**, che li mappano sugli indirizzi di gruppo KNX.
 
 Il controller comunica con i dispositivi tramite la **rete IP** (WiFi, Ethernet, oppure Thread attraverso un border router). Il commissioning via Bluetooth non è supportato: il dispositivo deve essere già raggiungibile in rete.
 
@@ -57,7 +58,7 @@ Preferisci il payload QR (`MT:...`): contiene il discriminatore completo. Il cod
 
 ## Modalità Universale
 
-Nel nodo **Control Matter from KNX**, scegli **Modalità Universale** per osservare tutti i dispositivi con un unico nodo flow. Ha sempre un input e un output e non usa le mappature del singolo endpoint. Il gateway KNX è opzionale e serve solo alle GA allarme/testo del Monitor batterie.
+Nel nodo **Control Matter Devices**, scegli **Modalità Universale** per osservare tutti i dispositivi con un unico nodo flow. Ha sempre un input e un output e non usa le mappature del singolo endpoint. Il gateway KNX è opzionale e serve solo alle GA allarme/testo del Monitor batterie.
 
 Il **Monitor batterie universale** scansiona tutti i nodi e gli endpoint commissionati cercando Power Source, emette uno snapshot iniziale e conserva lo stato normalizzato completo. Può emettere solo batterie sotto soglia oppure ogni aggiornamento. L'output include percentuale, valore raw, livello di carica, sostituzione, sostituibilità, tensione e identità del device; i metadati Matter raw sono in `msg.matter`. Invia `{payload:{action:"getAllBatteries"}}` per ottenere l'inventario in cache.
 

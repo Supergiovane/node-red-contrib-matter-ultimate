@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.0.3
+
+- Preserve the Matter Controller door-lock PIN as a protected Node-RED credential.
+
 ## 1.0.2
 
 - Fixed old palette node names

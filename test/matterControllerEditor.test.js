@@ -9,11 +9,16 @@ const {
 
 describe('Matter runtime dependencies', () => {
   const packageJson = require('../package.json')
+  const runtime = fs.readFileSync(path.join(__dirname, '..', 'nodes/matterUltimateController.js'), 'utf8')
 
   it('installs the Node.js platform adapter as a required dependency', () => {
     expect(packageJson.dependencies).to.have.property('@matter/nodejs')
     expect(packageJson.dependencies['@matter/nodejs']).to.equal(packageJson.dependencies['@matter/main'])
     expect(packageJson.optionalDependencies || {}).not.to.have.property('@matter/nodejs')
+  })
+
+  it('registers the door-lock PIN as a protected runtime credential', () => {
+    expect(runtime).to.match(/registerType\('matterUltimateController',[\s\S]*credentials:\s*\{[\s\S]*doorLockPin:\s*\{\s*type:\s*'password'\s*\}/)
   })
 })
 

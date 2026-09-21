@@ -1752,5 +1752,9 @@ module.exports = function (RED) {
       done()
     })
   }
-  RED.nodes.registerType('matterUltimateController', matterUltimateController)
+  RED.nodes.registerType('matterUltimateController', matterUltimateController, {
+    credentials: {
+      doorLockPin: { type: 'password' }
+    }
+  })
 }

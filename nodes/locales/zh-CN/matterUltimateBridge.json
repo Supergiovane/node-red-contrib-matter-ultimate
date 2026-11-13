@@ -23,6 +23,7 @@
       "alexa_dedup_ms": "Alexa 去重窗口 (毫秒, 0 = 关闭)",
       "turn_on_behavior": "开灯行为",
       "turn_on_ignore_level": "忽略 On 后立即发送的亮度",
+      "turn_on_ignore_full_level": "仅忽略 On 后立即发送的 100% 亮度（修复 Alexa 行为）",
       "turn_on_forward_all": "转发每个亮度命令",
       "ignore_level_ms": "On 后忽略亮度时间 (ms)",
       "cover_swap_open_close": "交换窗帘打开 / 关闭",

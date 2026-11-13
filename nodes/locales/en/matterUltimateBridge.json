@@ -23,6 +23,7 @@
       "alexa_dedup_ms": "Alexa duplicate-command window (ms, 0 = off)",
       "turn_on_behavior": "Turn-on behavior",
       "turn_on_ignore_level": "Ignore brightness sent immediately after On",
+      "turn_on_ignore_full_level": "Ignore only 100% brightness sent immediately after On (Fix Alexa behaviour)",
       "turn_on_forward_all": "Forward every brightness command",
       "ignore_level_ms": "Ignore brightness after On (ms)",
       "cover_swap_open_close": "Swap cover Open / Close",

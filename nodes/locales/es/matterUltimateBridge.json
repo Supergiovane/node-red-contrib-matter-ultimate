@@ -23,6 +23,7 @@
       "alexa_dedup_ms": "Ventana anti-duplicados Alexa (ms, 0 = off)",
       "turn_on_behavior": "Comportamiento al encender",
       "turn_on_ignore_level": "Ignorar brillo enviado justo después de On",
+      "turn_on_ignore_full_level": "Ignorar solo brillo 100% enviado justo después de On (Corrección comportamiento Alexa)",
       "turn_on_forward_all": "Reenviar cada comando de brillo",
       "ignore_level_ms": "Ignorar brillo tras On (ms)",
       "cover_swap_open_close": "Intercambiar Abrir / Cerrar persiana",

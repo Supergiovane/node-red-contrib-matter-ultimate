@@ -23,6 +23,7 @@
       "alexa_dedup_ms": "Alexa-Duplikat-Fenster (ms, 0 = aus)",
       "turn_on_behavior": "Einschaltverhalten",
       "turn_on_ignore_level": "Helligkeit direkt nach Ein ignorieren",
+      "turn_on_ignore_full_level": "Nur 100 % Helligkeit direkt nach Ein ignorieren (Fix für Alexa-Verhalten)",
       "turn_on_forward_all": "Jeden Helligkeitsbefehl weiterleiten",
       "ignore_level_ms": "Helligkeit nach Ein ignorieren (ms)",
       "cover_swap_open_close": "Abdeckung Öffnen / Schließen tauschen",

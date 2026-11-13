@@ -350,10 +350,14 @@ module.exports = function (RED) {
           node.setNodeStatus({ fill: 'yellow', shape: 'ring', text: `No KNX gateway: enable the node PINs to handle ${command.fn}` })
           return
         }
-        if (command.fn === 'onoff' && command.value === true && node.turnOnBehavior === 'ignoreLevelAfterOn') {
+        // 'ignoreLevelAfterOn' drops every level right after On; 'ignoreFullLevelAfterOn' drops only
+        // the 100% that Alexa appends to a plain "turn on", so "set to 50%" while off still works.
+        const filtersLevelAfterOn = node.turnOnBehavior === 'ignoreLevelAfterOn' || node.turnOnBehavior === 'ignoreFullLevelAfterOn'
+        if (command.fn === 'onoff' && command.value === true && filtersLevelAfterOn) {
           suppressLevelCommandsUntil = Date.now() + node.ignoreLevelAfterOnMs
         }
-        if (command.fn === 'level' && node.turnOnBehavior === 'ignoreLevelAfterOn' && Date.now() < suppressLevelCommandsUntil) {
+        if (command.fn === 'level' && filtersLevelAfterOn && Date.now() < suppressLevelCommandsUntil &&
+          (node.turnOnBehavior === 'ignoreLevelAfterOn' || Number(command.value) >= 100)) {
           node.setNodeStatus({ fill: 'yellow', shape: 'ring', text: 'Ignored Matter level after On', payload: command.value })
           return
         }

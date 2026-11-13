@@ -23,6 +23,7 @@
       "alexa_dedup_ms": "Finestra anti-duplicati Alexa (ms, 0 = off)",
       "turn_on_behavior": "Comportamento all'accensione",
       "turn_on_ignore_level": "Ignora luminosità inviata subito dopo On",
+      "turn_on_ignore_full_level": "Ignora solo luminosità 100% inviata subito dopo On (Fix comportamento Alexa)",
       "turn_on_forward_all": "Inoltra ogni comando luminosità",
       "ignore_level_ms": "Ignora luminosità dopo On (ms)",
       "cover_swap_open_close": "Scambia Apri / Chiudi tapparella",

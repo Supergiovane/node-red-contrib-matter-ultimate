@@ -401,6 +401,62 @@ describe('matterUltimateBridge – Room Air Conditioner and Door Lock routing', 
   })
 })
 
+describe('matterUltimateBridge – turn-on level filter', () => {
+  const buildDimmer = (turnOnBehavior) => {
+    let NodeConstructor
+    const knxWrites = []
+    const RED = {
+      nodes: {
+        createNode: (node, config) => {
+          Object.setPrototypeOf(node, EventEmitter.prototype)
+          EventEmitter.call(node)
+          node.id = config.id
+          node.send = () => {}
+          node.status = () => {}
+        },
+        getNode: (id) => ({
+          knx: { addClient: () => {}, removeClient: () => {}, sendKNXTelegramToKNXEngine: (t) => knxWrites.push(t) },
+          bridge: { registerDevice: () => {}, unregisterDevice: () => {}, getPairingInfo: () => ({ running: true, commissioned: true, fabrics: [] }), setDeviceState: () => true }
+        })[id],
+        registerType: (_type, constructor) => { NodeConstructor = constructor }
+      },
+      log: { error: () => {} }
+    }
+    require('../nodes/matterUltimateBridge.js')(RED)
+    const node = new NodeConstructor({
+      id: `dimmer-${turnOnBehavior}`,
+      server: 'knx',
+      serverMatterBridge: 'bridge',
+      deviceType: 'dimmablelight',
+      gaOnOff: '1/1/1',
+      gaLevel: '1/1/3',
+      turnOnBehavior,
+      ignoreLevelAfterOnMs: 5000
+    })
+    const levelWrites = () => knxWrites.filter((t) => t.grpaddr === '1/1/3').map((t) => t.payload)
+    return { node, levelWrites }
+  }
+
+  it('ignoreFullLevelAfterOn drops only the 100% sent right after On', () => {
+    const { node, levelWrites } = buildDimmer('ignoreFullLevelAfterOn')
+    node.handleMatterCommand({ fn: 'onoff', value: true })
+    node.handleMatterCommand({ fn: 'level', value: 100 })
+    expect(levelWrites()).to.deep.equal([])
+    node.handleMatterCommand({ fn: 'onoff', value: true })
+    node.handleMatterCommand({ fn: 'level', value: 50 })
+    expect(levelWrites()).to.deep.equal([50])
+    node.emit('close', () => {})
+  })
+
+  it('ignoreLevelAfterOn keeps dropping any level right after On', () => {
+    const { node, levelWrites } = buildDimmer('ignoreLevelAfterOn')
+    node.handleMatterCommand({ fn: 'onoff', value: true })
+    node.handleMatterCommand({ fn: 'level', value: 50 })
+    expect(levelWrites()).to.deep.equal([])
+    node.emit('close', () => {})
+  })
+})
+
 describe('matterUltimateBridge – optimistic cover feedback', () => {
   it('contains rejected asynchronous Flow-to-Matter updates and reports them via done', async () => {
     let NodeConstructor

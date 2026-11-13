@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.0.4
+
+- Matter Bridge: new *Turn-on behavior* option "Ignore only 100% brightness sent immediately after On (Fix Alexa behaviour)". It filters the 100% level Alexa appends to a plain "turn on", while "set to 50%" on a light that is off still reaches the actuator. The existing options are unchanged ([#2](https://github.com/Supergiovane/node-red-contrib-matter-ultimate/issues/2)).
+- Every editor notification can now be dismissed.
+
 ## 1.0.3
 
 - Preserve the Matter Controller door-lock PIN as a protected Node-RED credential.

@@ -1,23 +1,25 @@
-<!doctype html>
-<html lang="{{ page.lang | default: 'en' }}">
+{%- comment -%}
+  The documentation moved to www.maxsupervibe.com/docs/matter-ultimate/ (2026-11-26), in the same six languages
+  and with the same three pages. Every old page sends the visitor there at once and tells search
+  engines, with the canonical link, which page counts. The Markdown in docs/<lang>/ stays here: the
+  site copies it from this repo (SaccaniWebsite/scripts/sync-node-docs.mjs), so edit the docs here.
+{%- endcomment -%}
+{%- assign lang = page.lang | default: 'en' -%}
+{%- assign section = page.section | default: 'index' -%}
+{%- if lang == 'en' -%}{%- assign base = '/docs/matter-ultimate/' -%}{%- else -%}{%- capture base -%}/{{ lang | downcase }}/docs/matter-ultimate/{%- endcapture -%}{%- endif -%}
+{%- if section == 'index' -%}{%- assign target = base -%}{%- else -%}{%- capture target -%}{{ base }}{{ section }}/{%- endcapture -%}{%- endif -%}
+{%- assign url = 'https://www.maxsupervibe.com' | append: target -%}
+<!DOCTYPE html>
+<html lang="{{ lang }}">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>{{ page.title | escape }} · {{ site.title | escape }}</title>
-  <meta name="description" content="{{ site.description | escape }}">
-  <link rel="icon" type="image/svg+xml" href="{{ '/assets/brand/mark.svg' | relative_url }}">
-  <link rel="stylesheet" href="{{ '/assets/style.css' | relative_url }}">
-  {% for language in site.data.languages %}<link rel="alternate" hreflang="{{ language.code }}" href="{{ '/' | append: language.code | append: '/' | append: page.section | default: 'index' | append: '.html' | absolute_url }}">{% endfor %}
+  <link rel="canonical" href="{{ url }}">
+  <meta http-equiv="refresh" content="0; url={{ url }}">
+  <script>location.replace({{ url | jsonify }} + location.hash);</script>
 </head>
-<body>
-{% assign code = page.lang | default: 'en' %}{% assign labels = site.data.labels[code] %}
-<a class="skip" href="#content">{{ labels[6] }}</a>
-<header>
-  <div class="masthead"><a class="brand" href="{{ '/' | append: code | append: '/index.html' | relative_url }}"><img class="brand-mark" src="{{ '/assets/brand/mark.svg' | relative_url }}" alt="" width="32" height="32">{{ site.title }}</a><span>{{ labels[4] }}</span></div>
-  <nav class="languages" aria-label="{{ labels[3] }}"><span>{{ labels[3] }}</span>{% for language in site.data.languages %}<a lang="{{ language.code }}" hreflang="{{ language.code }}" href="{{ '/' | append: language.code | append: '/' | append: page.section | append: '.html' | relative_url }}"{% if code == language.code %} aria-current="true"{% endif %}>{{ language.name }}</a>{% endfor %}</nav>
-  <nav class="sections" aria-label="{{ labels[4] }}">{% assign sections = 'index,nodes,examples' | split: ',' %}{% for section in sections %}<a href="{{ '/' | append: code | append: '/' | append: section | append: '.html' | relative_url }}"{% if page.section == section %} aria-current="page"{% endif %}>{{ labels[forloop.index0] }}</a>{% endfor %}</nav>
-</header>
-<main id="content" tabindex="-1">{% if page.section == 'index' %}<img class="home-logo" src="{{ '/assets/brand/logo.svg' | relative_url }}" alt="{{ site.title | escape }}" width="1120" height="280" fetchpriority="high">{% endif %}<p class="eyebrow">{{ site.title }}</p><h1>{{ page.title }}</h1>{{ content }}</main>
-<footer><a href="{{ site.repository_url }}">GitHub · {{ site.package_name }}</a></footer>
+<body style="font-family:system-ui,sans-serif;max-width:640px;margin:48px auto;padding:0 16px;line-height:1.5">
+  <p>{{ site.title }}: <a href="{{ url }}">{{ url }}</a></p>
 </body>
 </html>

@@ -2,6 +2,7 @@
 const path = require('path')
 const LoggerClass = require('./utils/sysLogger')
 const { exportMatterStorage, importMatterStorage } = require('./utils/matterStorageBackup')
+const { createMatterCerebrumIntegration } = require('./utils/matterCerebrumProvider')
 const matterPackageVersion = require('@matter/main').version
 const { Specification } = require('@matter/model')
 
@@ -69,6 +70,7 @@ module.exports = (RED) => {
 
       // Attribute changes coming from the Matter devices
       node.matterManager.on('event', (_event) => {
+        try { node.cerebrumIntegration?.handleAttributeEvent(_event) } catch (error) { /* Cerebrum must never break Matter */ }
         node.nodeClients.forEach((_oClient) => {
           try {
             if (clientOwnsNode(_oClient, _event?.nodeId)) _oClient.clearMatterCommandBlock?.('connected')
@@ -81,6 +83,7 @@ module.exports = (RED) => {
 
       // Cluster events (button presses etc.)
       node.matterManager.on('matterEvent', (_event) => {
+        try { node.cerebrumIntegration?.handleClusterEvent(_event) } catch (error) { /* ignore */ }
         node.nodeClients.forEach((_oClient) => {
           try {
             if (clientOwnsNode(_oClient, _event?.nodeId)) _oClient.clearMatterCommandBlock?.('connected')
@@ -105,6 +108,7 @@ module.exports = (RED) => {
 
       // Connection state of a single paired device changed
       node.matterManager.on('nodeState', (_nodeId, _state) => {
+        try { node.cerebrumIntegration?.handleNodeState(_nodeId, _state) } catch (error) { /* ignore */ }
         node.nodeClients.forEach((_oClient) => {
           if (clientMatchesNode(_oClient, _nodeId)) {
             if (clientOwnsNode(_oClient, _nodeId)) {
@@ -363,7 +367,13 @@ module.exports = (RED) => {
       }
     }
 
+    // Read-only publication of the paired devices to Cerebrum Ultimate (optional).
+    node.cerebrumIntegration = null
+    try { node.cerebrumIntegration = createMatterCerebrumIntegration({ configNode: node }) } catch (error) { node.sysLogger?.warn(`Cerebrum integration unavailable: ${error.message}`) }
+
     node.on('close', (done) => {
+      try { node.cerebrumIntegration?.dispose() } catch (error) { /* ignore */ }
+      node.cerebrumIntegration = null
       try {
         node.nodeClients = []
         if (node.timerMatterConfigCheckState !== null) clearTimeout(node.timerMatterConfigCheckState);

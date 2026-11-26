@@ -1,5 +1,9 @@
 # Changelog
 
+## Unreleased
+
+- **Cerebrum Ultimate:** every Matter Controller configuration publishes its paired devices (on/off, level, contact, occupancy, temperature, humidity, illuminance, blinds, locks, thermostats, battery, power, energy, buttons and connection) to Cerebrum Ultimate, read-only, when Cerebrum is installed in the same Node-RED. Cerebrum can use them in chat, history and JavaScript routines, and MCP clients can read them through the Cerebrum MCP server. No configuration is needed; nothing can be commanded through this link. See the [Cerebrum Ultimate documentation](https://www.maxsupervibe.com/docs/cerebrum-ultimate/).
+
 ## 1.0.4
 
 - Matter Bridge: new *Turn-on behavior* option "Ignore only 100% brightness sent immediately after On (Fix Alexa behaviour)". It filters the 100% level Alexa appends to a plain "turn on", while "set to 50%" on a light that is off still reaches the actuator. The existing options are unchanged ([#2](https://github.com/Supergiovane/node-red-contrib-matter-ultimate/issues/2)).

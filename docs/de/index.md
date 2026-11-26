@@ -39,3 +39,7 @@ Ersetze beim Auswählen eines Gateways die gespeicherten Topics durch echte Grup
 Sichere das vollständige Node-RED-Benutzerverzeichnis. Lass **KNX Ultimate 7** installiert, füge das neue Paket hinzu und starte neu. Wähle **Back up and convert**, prüfe den Flow und führe **Deploy** aus, bevor du KNX Ultimate auf Version 8 aktualisierst. IDs, Verbindungen und Konfigurationsverweise bleiben erhalten. Der JSON-Export enthält keine geschützten Zugangsdaten oder Matter-Kopplungsdaten.
 
 Behalte dasselbe Node-RED-Benutzerverzeichnis und lösche `knxultimatestorage/matter` nicht: Dort liegen Kopplungsidentitäten und Fabrics. Setze Geräte nicht nur wegen der Migration zurück. Ein Flow-JSON-Export sichert diese Daten nicht.
+
+## Cerebrum Ultimate
+
+Ist **Cerebrum Ultimate** im selben Node-RED installiert, wird jede Matter-Controller-Konfiguration automatisch und schreibgeschützt veröffentlicht: die gekoppelten Geräte mit Ein/Aus, Pegel, Kontakt, Anwesenheit, Temperatur, Feuchte, Helligkeit, Rollladenposition, Schlosszustand, Thermostat, Batterie, Leistung, Energie, Tastendrücken und Verbindung. Cerebrum kann sie im Chat, im Verlauf und als Auslöser von JavaScript-Routinen nutzen, und MCP-Clients wie Claude können sie über den MCP-Server von Cerebrum lesen. Es ist nichts zu konfigurieren, und über diese Verbindung kann Cerebrum nichts schalten oder ändern. Ohne Cerebrum ändert sich nichts. Siehe die [Dokumentation von Cerebrum Ultimate](https://www.maxsupervibe.com/docs/cerebrum-ultimate/).
